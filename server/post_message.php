@@ -5,36 +5,36 @@ if(!(
 	isset($_POST["msg"]) and
 	isset($_POST["artifact"])
 )){
-	die("Cannot post message: arguments invalid.\n");
+	datalog("Cannot post message: arguments invalid.");
 }
 
 $msg = $_POST["msg"];
 $artifact = $_POST["artifact"];
 
 if(strlen($msg) < 1){
-	die("Invalid message: message must be at least 1 character.\n");
+	datalog("Invalid message: message must be at least 1 character.");
 }
 if($artifact < 0){
-	die("Invalid artifact: id must be greater than 0.\n");
+	datalog("Invalid artifact: id must be greater than 0.");
 }
 
 $query="INSERT INTO messages (text) VALUES('".$msg."')";
 
 $res = mysql_query($query);
 if(!$res){
-	die("Could not post message ('".$msg."') to database: ".mysql_error()."\n"
-		."Query: ".$query."\n");
+	datalog("Could not post message ('".$msg."') to database: ".mysql_error());
+	datalog("Query: ".$query);
 }
 
 $msg_id = mysql_insert_id();
 $query = "INSERT INTO artifact_messages (artifact_id,messages_id) VALUES(".$artifact.",".$msg_id.")";
 $res = mysql_query($query);
 if(!$res){
-	die("Posted message ('".$msg."') to database, but could not post artifact_messages entry: ".mysql_error()."\n"
-		."Query: ".$query."\n");
+	datalog("Posted message ('".$msg."') to database, but could not post artifact_messages entry: ".mysql_error());
+	datalog("Query: ".$query);
 }
 
-echo "Posted message ('".$msg."') and artifact_messages entry to database.\n";
+datalog("Posted message ('".$msg."') and artifact_messages entry to database.");
 
 include("disconnect.php");
 ?>

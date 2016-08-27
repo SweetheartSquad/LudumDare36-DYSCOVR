@@ -1,12 +1,35 @@
 <?php
 header("Access-Control-Allow-Origin: *");
 
+function done(){
+	global $data;
+	$data["success"]=true;
+	echo json_encode($data);
+}
+function fail(){
+	global $data;
+	$data["success"]=false;
+	echo json_encode($data);
+	exit();
+}
+function datalog($msg){
+	global $data;
+	$data["datalog"][]=$msg;
+}
+
+$data=array(
+	"datalog"=>array()
+);
+
+
+
 
 $connection = mysql_connect("localhost",$username,$password);
 if(!$connection){
-	die("Could not connect to database: ".mysql_error()."\n");
+	datalog("Could not connect to database: ".mysql_error());
+	fail();
 }
-echo "Connected to database.\n";
+datalog("Connected to database.");
 mysql_select_db($database);
 
 ?>

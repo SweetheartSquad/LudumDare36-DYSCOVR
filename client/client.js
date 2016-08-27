@@ -1,5 +1,11 @@
 // msg: message text
 // artiface: ID of artifact to send message for
+// 
+// data returned is an object in the format:
+// {
+// 	success:bool,
+// 	datalog:["text","with log","messages"]
+// }
 function postMessage(msg,artifact){
 	$.ajax({
 		url:"https://seans.site/stuff/DYSCOVR/post_message.php",
@@ -22,6 +28,13 @@ function postMessage(msg,artifact){
 // sort_column: 'timestamp' or 'rating'
 // sort_order: 'ASC' or 'DESC'
 // f: on_complete function(data)
+// 
+// data returned is an object in the format:
+// {
+// 	success:bool,
+// 	datalog:["text","with log","messages"],
+// 	rows:[{text,rating,timestamp},{text,rating,timestamp},...]
+// }
 function getMessages(artifact,sort_column,sort_order,f){
 	var artifact=$("input").val();
 	$.ajax({

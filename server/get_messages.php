@@ -6,7 +6,8 @@ if(!(
 	isset($_POST["sort_column"]) and
 	isset($_POST["sort_order"])
 )){
-	die("Cannot get messages: arguments invalid.\n");
+	datalog("Cannot get messages: arguments invalid.");
+	fail();
 }
 
 $artifact = $_POST["artifact"];
@@ -14,21 +15,24 @@ $sort_column = $_POST["sort_column"];
 $sort_order = $_POST["sort_order"];
 
 if($artifact < 0){
-	die("Invalid artifact: id must be greater than 0.\n");
+	datalog("Invalid artifact: id must be greater than 0.");
+	fail();
 }
 
 if(!(
 	$sort_column == "timestamp" or
 	$sort_column == "rating"
 )){
-	die("Invalid sort column: must be either timestamp or rating.\n");
+	datalog("Invalid sort column: must be either timestamp or rating.");
+	fail();
 }
 
 if(!(
 	$sort_order == "ASC" or
 	$sort_order == "DESC"
 )){
-	die("Invalid sort order: must be either ASC or DESC.\n");
+	datalog("Invalid sort order: must be either ASC or DESC.");
+	fail();
 }
 
 $query="
@@ -43,17 +47,17 @@ ORDER BY messages.".$sort_column." ".$sort_order;
 
 $res = mysql_query($query);
 if(!$res){
-	die("Could not get messages from database: ".mysql_error()."\n"
-		."Query: ".$query."\n");
+	datalog("Could not get messages from database: ".mysql_error());
+	datalog("Query: ".$query);
+	fail();
 }
 
-echo "Retrieved messages from database.\n";
+datalog("Retrieved messages from database.");
 
-$rows = array();
+$data["rows"] = array();
 while($r = mysql_fetch_assoc($res)) {
-    $rows[] = $r;
+    $data["rows"][] = $r;
 }
-echo json_encode($rows);
 
 include("disconnect.php");
 ?>
