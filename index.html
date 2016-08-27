@@ -53,13 +53,14 @@
         <div>
             welcome to DYSCOVR
         </div>
-        <div>
+        <div id="messages">
             messages or whatever
         </div>
+        <button onclick="getMessages($('input').val(),'timestamp','ASC',function(data){$('#messages').html(data)});">get messages</button>
         <div>
             <textarea>some sort of text input</textarea>
             <label>artifact (this'll be an in-game thing later)<input value=4 /></label>
-            <button onclick="postMessage();">post a message</button>
+            <button onclick="postMessage($('textarea').val(),$('input').val());">post a message</button>
         </div>
     </section>
 
