@@ -18,7 +18,7 @@ if($artifact < 0){
 	die("Invalid artifact: id must be greater than 0.\n");
 }
 
-$query="INSERT INTO messages VALUES(NULL,'".$msg."',0)";
+$query="INSERT INTO messages (text) VALUES('".$msg."')";
 
 $res = mysql_query($query);
 if(!$res){
@@ -27,7 +27,7 @@ if(!$res){
 }
 
 $msg_id = mysql_insert_id();
-$query = "INSERT INTO artifact_messages VALUES(NULL,".$artifact.",".$msg_id.")";
+$query = "INSERT INTO artifact_messages (artifact_id,messages_id) VALUES(".$artifact.",".$msg_id.")";
 $res = mysql_query($query);
 if(!$res){
 	die("Posted message ('".$msg."') to database, but could not post artifact_messages entry: ".mysql_error()."\n"
