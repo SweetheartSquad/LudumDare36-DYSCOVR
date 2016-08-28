@@ -78,10 +78,11 @@ var gamepads={
 	getStick: function(){
 		var gamepad=navigator.getGamepads()[0];
 		var stick=gamepad.axes.slice();
-		if(Math.abs(stick[0]) < this.deadZone){
-			stick[0]=0;
-		}if(Math.abs(stick[1]) < this.deadZone){
-			stick[1]=0;
+
+		for(var i=0;i<stick.length;++i){
+			if(Math.abs(stick[i]) < this.deadZone){
+				stick[i]=0;
+			}
 		}
 		return stick;
 	},
