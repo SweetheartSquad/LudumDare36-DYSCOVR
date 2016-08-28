@@ -152,7 +152,7 @@ function main(){
 		game.artifact=null;
 	}
 	game.artifact = getArtifact(Math.floor(Date.now()/1600));
-	game.addChild(game.artifact);
+	game.addChild(game.artifact);*/
 
 	// redraw player treads
 	var a=-game.player.w*2/3;
