@@ -218,6 +218,7 @@ function main(){
 	// shader
 
     filter.uniforms.time = (Date.now()-startTime)/1000;
+    filter.uniforms.camera = [game.x/size[0]/2.0,game.y/size[1]/2.0];
 
 	renderer.render(scene,renderTexture);
 	renderer.render(sprite);
