@@ -51,6 +51,14 @@
             right:0; /* split */
             bottom:0;
         }
+
+        #second{
+            display:none;
+        }
+
+        #third{
+            display:none;
+        }
     </style>
     
     <!-- VENDOR SCRIPTS -->
@@ -76,28 +84,78 @@
         <div>
             <h3>Write a message</h3>
             <select id="first">
-                <option value="">no</option>
+                <option value="">---</option>
+            </select>
+            <select id="second">
+                <option value="">---</option>
+            </select>
+            <select id="third">
+                <option value="">---</option>
             </select>
             <br/><br/>
-            <label>artifact (this'll be an in-game thing later)<input value=4 /></label>
+            <label>artifact (this'll be an in-game thing later)<input id="artifact" value=4 /></label>
             <br/><br/>
-            <button onclick="postMessage($('#first').val();">post a message</button>
+            <button onclick="postMessage($('#first').val()+$('#second').val()+$('#third').val(), $('#artifact').val();">post a message</button>
         </div>
     </section>
         </div>
     </section>
 
-    <script>
-    	$(document).ready(function(){
-            $.getJSON("assets/words/test.json", function(data){
-                $('#first').empty();
-                $('#first').append($('<option>').text("---"));
-                $.each( data, function( key, val ) {
-                        $('#first').append($('<option>').text(key).attr('value', val));
-                });
+<script>
+	file1="";
+    file2="";
+
+    $(document).ready(function(){
+        $.getJSON("assets/words/words.json", function(data){
+            $('#first').empty();
+            $('#first').append($('<option>').text("---"));
+            $.each( data.first, function( key, val ) {
+                    $('#first').append($('<option>').text(val).attr('value', key));
             });
         });
-    </script>
+    });
+
+    $('#first').change(function() {
+        $('#second').show();
+        $('#third').hide();
+
+        $.getJSON("assets/words/words.json", function(data){
+            $('#second').empty();
+            $('#second').append($('<option>').text("---"));
+            
+            if ($('#first').val() === '0') {
+                $.each( data.second1, function( key, val ) {
+                    $('#second').append($('<option>').text(val).attr('value', key));
+                });
+            } else if ($('#first').val() === '1') {
+                $.each( data.second2, function( key, val ) {
+                $('#second').append($('<option>').text(val).attr('value', key));
+                });
+            } 
+        });
+    });
+
+    $('#second').change(function() {
+        $('#third').show();
+
+        $.getJSON("assets/words/words.json", function(data){
+            $('#third').empty();
+            $('#third').append($('<option>').text("---"));
+            if ($('#first').val() === '0') {
+                $.each( data.third1, function( key, val ) {
+                    $('#third').append($('<option>').text(val).attr('value', key));
+                });
+            } else if ($('#first').val() === '1') {
+                $.each( data.third2, function( key, val ) {
+                $('#third').append($('<option>').text(val).attr('value', key));
+                });
+            } 
+        });
+    });
+</script>
+
+<script>
+    var split=0.33;
 
     <!-- CLIENT SCRIPTS -->
     <script src="client/utils.js"></script>
