@@ -19,10 +19,11 @@
         }
         canvas{
             top:0;
-            left:67%; /* 1-split */
+            left:0; /* 1-split */
             right:0;
             bottom:0;
             margin:auto;
+            background: #F0F;
         }
 
         #main{
@@ -30,13 +31,25 @@
             position:absolute;
             background:#FF0;
 
-            width:67%; /* 1-split */
+            width:43.75%; /* 1-split */
 
             top:0;
             left:0;
-            right:33%; /* split */
+            right:56.25%; /* split */
             bottom:0;
-            margin:auto;
+        }
+
+        #display{
+            display:block;
+            position:absolute;
+            background:#0F0;
+
+            width:56.25%; /* 1-split */
+
+            top:0;
+            left:43.75%;
+            right:0; /* split */
+            bottom:0;
         }
     </style>
     
@@ -69,4 +82,5 @@
     <script src="client/index.js" async></script>
 
     <!-- PIXI CANVAS ENDS UP HERE -->
+    <section id="display"></section>
 </body>

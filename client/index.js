@@ -1,5 +1,3 @@
-var split=0.33;
-
 var bgm = new Howl({
 	urls:["assets/audio/song.wav"],
 	autoplay:true,
@@ -9,8 +7,7 @@ var bgm = new Howl({
 bgm.fadeIn(1,3000);
 
 // create renderer
-var size = [1920, 1080];
-var ratio = size[0] / size[1];
+var size = [512, 512];
 var renderer = PIXI.autoDetectRenderer(
 	size[0],size[1],
 	{antiAlias:false, transparent:false, resolution:1}
@@ -22,7 +19,7 @@ renderer.view.style.display = "block";
 window.onresize = onResize;
 
 // add the canvas to the html document
-document.body.appendChild(renderer.view);
+$("#display").append(renderer.view);
 
 // create stage a container object 
 var scene = new PIXI.Container();
@@ -77,13 +74,7 @@ function main(){
 }
 
 function onResize() {
-	if (window.innerWidth / window.innerHeight >= ratio) {
-		var w = window.innerHeight * ratio;
-		var h = window.innerHeight;
-	} else {
-		var w = window.innerWidth;
-		var h = window.innerWidth / ratio;
-	}
-	renderer.view.style.width = w*split + 'px';
-	renderer.view.style.height = h + 'px';
+	var s=Math.min($("#display").innerWidth(),$("#display").innerHeight());
+	renderer.view.style.width = s + 'px';
+	renderer.view.style.height = s + 'px';
 }
