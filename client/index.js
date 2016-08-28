@@ -1,7 +1,7 @@
 $(window).on("keyup",keys.on_up.bind(keys));
 $(window).on("keydown",keys.on_down.bind(keys));
 
-
+var startTime=Date.now();
 var bgm = new Howl({
 	urls:["assets/audio/BG.ogg"],
 	autoplay:true,
@@ -30,9 +30,35 @@ $("#display").append(renderer.view);
 var scene = new PIXI.Container();
 
 
+// create a new render texture..
+var brt = new PIXI.BaseRenderTexture(size[0], size[1], PIXI.SCALE_MODES.NEAREST, 1);
+var renderTexture = new PIXI.RenderTexture(brt);
+ 
+// create a sprite that uses the new render texture...
+// and add it to the stage
+var sprite = new PIXI.Sprite(renderTexture);
+scene.addChild(sprite);	
+
+
+function CustomFilter(fragmentSource){
+    PIXI.Filter.call(this,
+        // vertex shader
+        null,
+        // fragment shader
+        fragmentSource
+    );
+}
+
+CustomFilter.prototype = Object.create(PIXI.Filter.prototype);
+CustomFilter.prototype.constructor = CustomFilter;
+
+
+
 PIXI.loader
 	.add("player", "assets/img/player.png")
-	.add("bg", "assets/img/bg.png");
+	.add("bg", "assets/img/bg.png")
+	.add("overlay", "assets/img/overlay.png")
+	.add('shader','assets/shader.frag');
 
 PIXI.loader
 	.on("progress", loadProgressHandler)
@@ -56,8 +82,8 @@ function setup(){
 
 	//game
 	game.bg = new PIXI.Sprite(PIXI.loader.resources.bg.texture);
-	game.bg.width = size[0];
-	game.bg.height = size[1];
+	game.bg.width = size[0]*4;
+	game.bg.height = size[1]*4;
 	game.addChild(game.bg);
 
 	game.player = new PIXI.Container();
@@ -87,7 +113,20 @@ function setup(){
 	game.addChild(game.player);
 
 
+	var overlay = new PIXI.Sprite(PIXI.loader.resources.overlay.texture);
+	overlay.width = size[0];
+	overlay.height = size[1];
+
+
 	scene.addChild(game);
+	scene.addChild(overlay);
+
+
+
+	// shader
+	var fragmentSrc = PIXI.loader.resources.shader.data;
+    filter = new CustomFilter(fragmentSrc);
+    sprite.filters = [filter];
 
 	onResize();
 	main();
@@ -175,7 +214,13 @@ function main(){
 	}
 	game.player.treads.endFill();
 
-	renderer.render(scene);
+
+	// shader
+
+    filter.uniforms.time = (Date.now()-startTime)/1000;
+
+	renderer.render(scene,renderTexture);
+	renderer.render(sprite);
 	requestAnimationFrame(main);
 
 	keys.clear();
