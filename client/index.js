@@ -98,34 +98,37 @@ function main(){
 
 
 	// get inputs
-	var input=[0,0];
+	var inputMove=[0,0];
+	var inputCam=[0,0];
 
 	if(keys.isDown(keys.LEFT)){
-		input[0]=-1;
+		inputMove[0]=-1;
 	}if(keys.isDown(keys.RIGHT)){
-		input[0]=1;
+		inputMove[0]=1;
 	}if(keys.isDown(keys.UP)){
-		input[1]=-1;
+		inputMove[1]=-1;
 	}if(keys.isDown(keys.DOWN)){
-		input[1]=1;
+		inputMove[1]=1;
 	}
 
 	if(gamepads.connected){
 		var stick = gamepads.getStick();
-		input[0]+=stick[0];
-		input[1]+=stick[1];
+		inputMove[0]+=stick[0];
+		inputMove[1]+=stick[1];
+		inputCam[0]+=stick[2];
+		inputCam[1]+=stick[3];
 
 		var dpad = gamepads.getDpad();
-		input[0]+=dpad[0];
-		input[1]+=dpad[1];
+		inputMove[0]+=dpad[0];
+		inputMove[1]+=dpad[1];
 	}
 
-	input[0]=Math.min(1,Math.max(input[0],-1));
-	input[1]=Math.min(1,Math.max(input[1],-1));
+	inputMove[0]=Math.min(1,Math.max(inputMove[0],-1));
+	inputMove[1]=Math.min(1,Math.max(inputMove[1],-1));
 
 	game.player.a=[
-		input[0]*game.player.s[0],
-		input[1]*game.player.s[1]
+		inputMove[0]*game.player.s[0],
+		inputMove[1]*game.player.s[1]
 	];
 
 	game.player.v=v_add(game.player.v,game.player.a);
@@ -143,8 +146,8 @@ function main(){
 	}
 
 
-	game.x=lerp(game.x,-(game.player.x-size[0]/2+game.player.v[0]*size[0]/16),0.1);
-	game.y=lerp(game.y,-(game.player.y-size[1]/2+game.player.v[1]*size[1]/16),0.1);
+	game.x=lerp(game.x,-(game.player.x-size[0]/2+game.player.v[0]*size[0]/16 + inputCam[0]*size[0]/3 ),0.1);
+	game.y=lerp(game.y,-(game.player.y-size[1]/2+game.player.v[1]*size[1]/16 + inputCam[1]*size[1]/3 ),0.1);
 
 
 	/*if(game.artifact!==null){
