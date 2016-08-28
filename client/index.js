@@ -142,6 +142,11 @@ function main(){
 		game.player.rotation = slerp(game.player.rotation, Math.atan2(game.player.v[1],game.player.v[0]), 0.25);
 	}
 
+
+	game.x=lerp(game.x,-(game.player.x-size[0]/2+game.player.v[0]*size[0]/16),0.1);
+	game.y=lerp(game.y,-(game.player.y-size[1]/2+game.player.v[1]*size[1]/16),0.1);
+
+
 	/*if(game.artifact!==null){
 		game.removeChild(game.artifact);
 		game.artifact=null;
