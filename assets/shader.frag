@@ -31,9 +31,28 @@ vec3 terrain(vec2 pos){
 
 void main(void)
 {
+
+	vec2 blockSize=vec2(32.0,64.0);
+
 	float t=time;
 
-	vec2 uvs = vTextureCoord.xy;
+	vec2 uvs = mod(vTextureCoord.xy,0.5);
+	vec2 uvBlock=mod(floor(uvs*blockSize)/blockSize+1.0/vec2(blockSize),0.5);
+
+	vec2 center=vec2(0.25+sin(time*0.124)/10.0,0.25+sin(time*0.133)/10.0);
+	float vignette=distance(uvs,center);
+	float vignetteBlock=distance(uvBlock,center);
+
+	
+
+	float alignment=sin(time*0.88+uvBlock.y)/30.0;
+	uvs.x+=alignment*(rand(uvBlock+vec2(uvBlock.x,floor(time*uvBlock.y))) > vignetteBlock/10.0 ? (sin(time*0.12)+1.0)/4.0+0.2 : 1.0);
+
+	alignment=cos(time*1.3+uvBlock.x)/30.0;
+	uvs.y+=alignment*(rand(uvBlock+vec2(uvBlock.y,floor(time*uvBlock.x))) > vignetteBlock/10.0 ? (sin(time*0.33)+1.0)/4.0+0.2 : 1.0);
+
+	uvs.x=mod(uvs.x,0.5);
+	uvs.y=mod(uvs.y,0.5);
 
 
 
@@ -44,6 +63,36 @@ void main(void)
 	}
 
 
+	uvs = mod(vTextureCoord.xy,0.5);
+
+	vec2 inset=vec2(1.0)-abs(vec2(0.5)-(uvBlock-uvs)*blockSize)*2.0;
+
+	t=time+vignetteBlock+rand(uvBlock);
+	fg.rgb*=pow(inset.x,vignetteBlock);
+	fg.rgb*=pow(inset.y,vignetteBlock);
+
 	fg.a=1.0;
+
 	gl_FragColor = fg;
 }
+
+
+/*
+//no post-processing
+void main(void)
+{
+
+	vec2 blockSize=vec2(32.0,64.0);
+
+	float t=time;
+
+	vec2 uvs = mod(vTextureCoord.xy,0.5);
+	vec4 fg = texture2D(uSampler, uvs);
+	if(fg.rgb==vec3(0)){
+		fg.rgb=terrain(-uvs+camera);
+	}
+
+	fg.a=1.0;
+
+	gl_FragColor = fg;
+} */
