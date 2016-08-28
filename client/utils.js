@@ -42,3 +42,21 @@ function dot(a,b){
 function len(v){
 	return Math.sqrt(v[0]*v[0]+v[1]*v[1]);
 }
+// vector add
+function v_add(a,b){
+	return [a[0]+b[0],a[1]+b[1]];
+}
+
+function lerp(from,to,t){
+	return from+(to-from)*t;
+}
+
+function slerp(from,to,t){
+	while (to-from > Math.PI){
+		from+=Math.PI*2;
+	}
+	while (to-from < -Math.PI){
+		from-=Math.PI*2;
+	}
+	return lerp(from,to,t)%(Math.PI*2);
+}
