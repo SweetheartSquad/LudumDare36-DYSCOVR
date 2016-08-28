@@ -136,7 +136,7 @@ function main(){
 		game.removeChild(game.artifact);
 		game.artifact=null;
 	}
-	game.artifact = getArtifact(Math.floor(Date.now()/600));
+	game.artifact = getArtifact(Math.floor(Date.now()/1600));
 	game.addChild(game.artifact);
 
 
