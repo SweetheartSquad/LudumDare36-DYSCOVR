@@ -60,23 +60,29 @@ function setup(){
 	game.bg.height = size[1];
 	game.addChild(game.bg);
 
-	game.player= new PIXI.Graphics();
-	
-	game.player.beginFill(0xBBBBBB,1);
+	game.player = new PIXI.Container();
 
 	game.player.w=size[0]/15;
 	game.player.h=size[1]/25;
-	game.player.drawRect(-game.player.w/2,-game.player.h/2,game.player.w,game.player.h);
-	game.player.drawRect(-game.player.w/4,-game.player.h/4,game.player.w,game.player.h/2);
-	game.player.endFill();
+	game.player.s=[size[0]/500,size[1]/500];
 
-	game.player.v=[0,0];
-	//game.player.width=32;
-	//game.player.height=32;
 	game.player.x=10;
 	game.player.y=10;
+	game.player.v=[0,0];
 
-	game.player.s=[size[0]/400,size[1]/400];
+
+	game.player.treads = new PIXI.Graphics();
+	game.player.treads.advance=0;
+	
+	var player_chasis = new PIXI.Graphics();
+	player_chasis.beginFill(0xBBBBBB,1);
+
+	player_chasis.drawRect(-game.player.w/2,-game.player.h/2,game.player.w,game.player.h);
+	player_chasis.drawRect(-game.player.w/4,-game.player.h/4,game.player.w,game.player.h/2);
+	player_chasis.endFill();
+
+	game.player.addChild(game.player.treads);
+	game.player.addChild(player_chasis);
 
 	game.addChild(game.player);
 
@@ -124,23 +130,42 @@ function main(){
 
 	game.player.v=v_add(game.player.v,game.player.a);
 
-	game.player.v[0]*=0.5;
-	game.player.v[1]*=0.5;
+	game.player.v[0]*=0.8;
+	game.player.v[1]*=0.8;
 
 	game.player.x+=game.player.v[0];
 	game.player.y+=game.player.v[1];
 
+	game.player.treads.advance+=len(game.player.v);
+
 	if(len(game.player.a) > 0){
-		game.player.rotation = slerp(game.player.rotation, Math.atan2(game.player.v[1],game.player.v[0]), 0.5);
+		game.player.rotation = slerp(game.player.rotation, Math.atan2(game.player.v[1],game.player.v[0]), 0.25);
 	}
 
-	if(game.artifact!==null){
+	/*if(game.artifact!==null){
 		game.removeChild(game.artifact);
 		game.artifact=null;
 	}
 	game.artifact = getArtifact(Math.floor(Date.now()/1600));
 	game.addChild(game.artifact);
 
+	// redraw player treads
+	var a=-game.player.w*2/3;
+	var b=game.player.w*4/3;
+
+	game.player.treads.clear();
+
+	game.player.treads.beginFill(0xBBFFBB,1);
+	game.player.treads.drawRect(a,-game.player.h*2/3,b,game.player.h*4/3);
+	
+	game.player.treads.beginFill(0x004444,1);
+	for(var i=game.player.treads.advance/(game.player.w)%1;i<3.5;i+=1){
+		var t=a+b*((i-0.5)/3);
+		var c=Math.max(t,a);
+		var d=Math.min(t+b/6,a+b);
+		game.player.treads.drawRect(c,-game.player.h*2/3,d-c,game.player.h*4/3);
+	}
+	game.player.treads.endFill();
 
 	renderer.render(scene);
 	requestAnimationFrame(main);
