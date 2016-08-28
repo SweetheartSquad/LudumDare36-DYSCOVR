@@ -87,21 +87,18 @@
         </div>
     </section>
 
-<script>
-	$(document).ready(function(){
-        $.getJSON("/assets/words/test.json", function(data){
-            $('#first').empty();
-            $('#first').append($('<option>').text("---"));
-            $.each( data, function( key, val ) {
-                    $('#first').append($('<option>').text(key).attr('value', val));
+    <script>
+    	$(document).ready(function(){
+            $.getJSON("/assets/words/test.json", function(data){
+                $('#first').empty();
+                $('#first').append($('<option>').text("---"));
+                $.each( data, function( key, val ) {
+                        $('#first').append($('<option>').text(key).attr('value', val));
+                });
             });
         });
-    });
-</script>
-
-<script>
-    var split=0.33;
-
+    </script>
+    
     <!-- CLIENT SCRIPTS -->
     <script src="client/utils.js"></script>
     <script src="client/fractals.js"></script>
