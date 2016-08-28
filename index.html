@@ -95,7 +95,7 @@
             <br/><br/>
             <label>artifact (this'll be an in-game thing later)<input id="artifact" value=4 /></label>
             <br/><br/>
-            <button onclick="postMessage($('#first').val()+$('#second').val()+$('#third').val(), $('#artifact').val();">post a message</button>
+            <button onclick="postMessage($('#first').find('option:selected').text()+' '+$('#second').find('option:selected').text()+' '+$('#third').find('option:selected').text()+".", $('#artifact').val());">post a message</button>
         </div>
     </section>
         </div>

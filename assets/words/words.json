@@ -1,19 +1,28 @@
 {
 	"first":[
-		"This is a ",
-		"You can use this to "
+		"This is a",
+		"You can use this to"
 	],
 
 	"second1":
 	[
-		"clam",
-		"wood",
-		"metal",
-		"ore",
-		"tree",
-		"bear",
 		"wooden",
-		"metallic"
+		"metallic",
+		"ivory",
+		"jade",
+		"diamond",
+		"misshapen",
+		"weird",
+		"common",
+		"shiny",
+		"advanced",
+		"convenient",
+		"handheld",
+		"obtuse",
+		"bizarre",
+		"confusing",
+		"industrial",
+		"miniature"
 	],
 
 	"second2":
@@ -23,17 +32,31 @@
 		"drill",
 		"refine",
 		"break",
-		"fix"
+		"fix",
+		"polish",
+		"synthesize",
+		"break apart",
+		"dissect",
+		"clean",
+		"weld",
+		"shape"
 	],
 
 	"third1":
 	[
-		"digger",
-		"hammer",
-		"jigger",
-		"cooler",
+		"killer",
+		"diger",
+		"driller",
+		"refiner",
 		"breaker",
-		"fixer"
+		"fixer",
+		"polisher",
+		"synthesizer",
+		"break-aparter",
+		"dissecter",
+		"cleaner",
+		"welder",
+		"shaper"
 	],
 
 	"third2":
@@ -43,7 +66,17 @@
 		"jewellry",
 		"bones",
 		"meat",
-		"vegetables"
+		"vegetables",
+		"clams",
+		"ivory",
+		"jade",
+		"iron",
+		"wood",
+		"ceramics",
+		"ore",
+		"metal",
+		"trees",
+		"animals"
 	]
 
 }
