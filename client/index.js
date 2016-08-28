@@ -46,7 +46,7 @@ $(window).on("keydown",keys.on_down.bind(keys));
 
 
 var bgm = new Howl({
-	urls:["assets/audio/song.wav"],
+	urls:["assets/audio/BG.ogg"],
 	autoplay:true,
 	loop:true,
 	volume:0
