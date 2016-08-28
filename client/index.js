@@ -1,3 +1,47 @@
+// setup inputs
+var keys={
+	down:[],
+	justDown:[],
+	up:[],
+
+	LEFT: 37,
+	UP: 38,
+	RIGHT: 39,
+	DOWN: 40,
+
+	clear:function(){
+		this.justDown=[];
+		this.up=[];
+	},
+
+
+	on_down:function(event){
+		if(this.down[event.keyCode]!==true){
+			this.down[event.keyCode]=true;
+			this.justDown[event.keyCode]=true;
+		}
+	},
+	on_up:function(event){
+		this.down[event.keyCode]=false;
+		this.justDown[event.keyCode]=false;
+		this.up[event.keyCode]=true;
+	},
+
+	isDown:function(_key){
+		return this.down[_key]===true;
+	},
+	isJustDown:function(_key){
+		return this.justDown[_key]===true;
+	},
+	isUp:function(_key){
+		return this.up[_key]===true;
+	}
+};
+
+$(window).on("keyup",keys.on_up.bind(keys));
+$(window).on("keydown",keys.on_down.bind(keys));
+
+
 var bgm = new Howl({
 	urls:["assets/audio/song.wav"],
 	autoplay:true,
@@ -54,8 +98,8 @@ function setup(){
 	game.addChild(game.bg);
 
 	game.player= new PIXI.Sprite(PIXI.loader.resources.player.texture);
-	game.player.width=320;
-	game.player.height=320;
+	game.player.width=32;
+	game.player.height=32;
 	game.player.x=10;
 	game.player.y=10;
 	game.addChild(game.player);
@@ -68,9 +112,23 @@ function setup(){
 }
 
 function main(){
+	if(keys.isDown(keys.LEFT)){
+		game.player.x-=1;
+	}
+	if(keys.isDown(keys.RIGHT)){
+		game.player.x+=1;
+	}
+	if(keys.isDown(keys.UP)){
+		game.player.y-=1;
+	}
+	if(keys.isDown(keys.DOWN)){
+		game.player.y+=1;
+	}
 
 	renderer.render(scene);
 	requestAnimationFrame(main);
+
+	keys.clear();
 }
 
 function onResize() {
