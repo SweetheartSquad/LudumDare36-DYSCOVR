@@ -54,7 +54,7 @@ var bgm = new Howl({
 bgm.fadeIn(1,3000);
 
 // create renderer
-var size = [256, 256];
+var size = [512, 512];
 var renderer = PIXI.autoDetectRenderer(
 	size[0],size[1],
 	{antiAlias:false, transparent:false, resolution:1,
