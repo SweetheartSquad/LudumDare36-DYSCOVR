@@ -1,0 +1,49 @@
+{
+	"first":[
+		"This is a ",
+		"You can use this to "
+	],
+
+	"second1":
+	[
+		"clam",
+		"wood",
+		"metal",
+		"ore",
+		"tree",
+		"bear",
+		"wooden",
+		"metallic"
+	],
+
+	"second2":
+	[
+		"kill",
+		"dig",
+		"drill",
+		"refine",
+		"break",
+		"fix"
+	],
+
+	"third1":
+	[
+		"digger",
+		"hammer",
+		"jigger",
+		"cooler",
+		"breaker",
+		"fixer"
+	],
+
+	"third2":
+	[
+		"rocks",
+		"trees",
+		"jewellry",
+		"bones",
+		"meat",
+		"vegetables"
+	]
+
+}
