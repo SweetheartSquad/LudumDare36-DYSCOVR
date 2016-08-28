@@ -33,24 +33,6 @@ function getArtifact(_seed){
 		p[i+1]*=scale[1];
 	}
 
-	// get bounds
-	var bounds=[999999,9999999,0,0];
-	for(var i=0;i<p.length-1;i+=2){
-		bounds[0]=Math.min(bounds[0],p[i]);
-		bounds[2]=Math.max(bounds[2],p[i+1]);
-		bounds[1]=Math.min(bounds[1],p[i]);
-		bounds[3]=Math.max(bounds[3],p[i+1]);
-	}
-	for(var i=0;i<p.length-1;i+=2){
-		p[i]-=bounds[0];
-		p[i]/=Math.max(bounds[2]-bounds[0],bounds[3]-bounds[1]);
-		p[i+1]-=bounds[1];
-		p[i+1]/=Math.max(bounds[2]-bounds[0],bounds[3]-bounds[1]);
-
-		p[i]*=50;
-		p[i+1]*=50;
-	}
-
 
 	// offset points
 	var offset=[rng()*64-rng()*64,rng()*64-rng()*64];
@@ -77,16 +59,26 @@ function getArtifact(_seed){
 		}
 	}
 
-
-
-
-	var center=[0,0];
+	// get bounds
+	var bounds=[9999999,9999999,-9999999,-9999999];
 	for(var i=0;i<p.length-1;i+=2){
-		center[0]+=p[i];
-		center[1]+=p[i+1];
+		bounds[0]=Math.min(bounds[0],p[i]);
+		bounds[2]=Math.max(bounds[2],p[i+1]);
+		bounds[1]=Math.min(bounds[1],p[i]);
+		bounds[3]=Math.max(bounds[3],p[i+1]);
 	}
-	center[0]/=p.length/2;
-	center[1]/=p.length/2;
+
+	bounds.max=Math.max(bounds[2]-bounds[0],bounds[3]-bounds[1]);
+	for(var i=0;i<p.length-1;i+=2){
+		p[i]-=bounds[0];
+		p[i]/=bounds.max;
+		p[i+1]-=bounds[1];
+		p[i+1]/=bounds.max;
+
+		p[i]*=size[0]/10;
+		p[i+1]*=size[1]/10;
+	}
+
 
 
 	// triangulate
@@ -98,12 +90,6 @@ function getArtifact(_seed){
 		]);
 	}
 	
-
-
-
-	
-
-
 	
 	//outlines
 	g.beginFill(0,0);
@@ -142,10 +128,12 @@ function getArtifact(_seed){
 	//connections.push([p[Math.round(p.length/4)],p[Math.round(p.length/4)-1]]);
 
 	for(var i=0;i<connections.length;++i){
+		/*
+		// connection indicators
 		g.beginFill(rgb(0,0,100),0.5);
 		g.lineStyle(2, rgb(200,150,100), 0.5);
 		g.drawCircle(connections[i][0],connections[i][1],5);
-		g.endFill();
+		g.endFill();*/
 
 		if(i!=0 && rng() < 0.9*1/(getArtifact.recursion*getArtifact.recursion)){
 			var child = getArtifact(rng()*10000);

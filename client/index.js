@@ -101,11 +101,24 @@ function setup(){
 	game.bg.height = size[1];
 	game.addChild(game.bg);
 
-	game.player= new PIXI.Sprite(PIXI.loader.resources.player.texture);
-	game.player.width=32;
-	game.player.height=32;
+	game.player= new PIXI.Graphics();
+	
+	game.player.beginFill(0xBBBBBB,1);
+
+	game.player.w=size[0]/15;
+	game.player.h=size[1]/25;
+	game.player.drawRect(-game.player.w/2,-game.player.h/2,game.player.w,game.player.h);
+	game.player.drawRect(-game.player.w/4,-game.player.h/4,game.player.w,game.player.h/2);
+	game.player.endFill();
+
+	game.player.v=[0,0];
+	//game.player.width=32;
+	//game.player.height=32;
 	game.player.x=10;
 	game.player.y=10;
+
+	game.player.s=[size[0]/200,size[1]/200];
+
 	game.addChild(game.player);
 
 
@@ -118,19 +131,31 @@ function setup(){
 function main(){
 	//renderer.resize((Math.sin(Date.now()/500)+1)*32,128);
 
+	game.player.a=[0,0];
 	if(keys.isDown(keys.LEFT)){
-		game.player.x-=1;
+		game.player.a[0]-=game.player.s[0];
 	}
 	if(keys.isDown(keys.RIGHT)){
-		game.player.x+=1;
+		game.player.a[0]+=game.player.s[0];
 	}
 	if(keys.isDown(keys.UP)){
-		game.player.y-=1;
+		game.player.a[1]-=game.player.s[1];
 	}
 	if(keys.isDown(keys.DOWN)){
-		game.player.y+=1;
+		game.player.a[1]+=game.player.s[1];
 	}
 
+	game.player.v=v_add(game.player.v,game.player.a);
+
+	game.player.v[0]*=0.7;
+	game.player.v[1]*=0.7;
+
+	game.player.x+=game.player.v[0];
+	game.player.y+=game.player.v[1];
+
+	if(len(game.player.a) > 0){
+		game.player.rotation = slerp(game.player.rotation, Math.atan2(game.player.v[1],game.player.v[0]), 0.5);
+	}
 
 	if(game.artifact!==null){
 		game.removeChild(game.artifact);
