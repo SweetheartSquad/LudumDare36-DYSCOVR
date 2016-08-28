@@ -41,6 +41,71 @@ var keys={
 	}
 };
 
+var gamepads={
+	available: function(){
+		return "getGamepads" in navigator;
+	},
+
+	connected:false,
+	deadZone:0.1,
+
+	init:function(){
+		if(this.available()){
+			// listen to connection events for firefox
+	        $(window).on("gamepadconnected", function() {
+	        	this.connected=true;
+	            console.log("gamepad connection event");
+	        }.bind(this));
+
+	        $(window).on("gamepaddisconnected", function() {
+	        	this.connected=false;
+	            console.log("gamepad disconnection event");
+	        }.bind(this));
+
+	        // poll for connections chrome
+            var pollForPad = window.setInterval(function() {
+                if(navigator.getGamepads()[0]) {
+                    if(!this.connected){
+                    	$(window).trigger("gamepadconnected");
+                    }
+                    window.clearInterval(pollForPad);
+                }
+            }.bind(this), 1000);
+		}
+	},
+
+	update:function(){
+
+	},
+
+	getStick: function(){
+		var gamepad=navigator.getGamepads()[0];
+		var stick=gamepad.axes.slice();
+		if(Math.abs(stick[0]) < this.deadZone){
+			stick[0]=0;
+		}if(Math.abs(stick[1]) < this.deadZone){
+			stick[1]=0;
+		}
+		return stick;
+	},
+
+	getDpad: function(){
+		var gamepad=navigator.getGamepads()[0];
+		var dpad=[0,0];
+		if(gamepad.buttons[15].pressed){
+			dpad[0]+=1;
+		}if(gamepad.buttons[14].pressed){
+			dpad[0]-=1;
+		}
+		if(gamepad.buttons[13].pressed){
+			dpad[1]+=1;
+		}if(gamepad.buttons[12].pressed){
+			dpad[1]-=1;
+		}
+		return dpad;
+	}
+};
+
 $(window).on("keyup",keys.on_up.bind(keys));
 $(window).on("keydown",keys.on_down.bind(keys));
 
@@ -92,6 +157,8 @@ function loadProgressHandler(loader, resource){
 var game = new PIXI.Container();
 
 function setup(){
+	gamepads.init();
+
 	// called when loader completes
 	console.log("All files loaded");
 
@@ -117,7 +184,7 @@ function setup(){
 	game.player.x=10;
 	game.player.y=10;
 
-	game.player.s=[size[0]/200,size[1]/200];
+	game.player.s=[size[0]/400,size[1]/400];
 
 	game.addChild(game.player);
 
@@ -131,24 +198,42 @@ function setup(){
 function main(){
 	//renderer.resize((Math.sin(Date.now()/500)+1)*32,128);
 
-	game.player.a=[0,0];
+
+	// get inputs
+	var input=[0,0];
+
 	if(keys.isDown(keys.LEFT)){
-		game.player.a[0]-=game.player.s[0];
+		input[0]=-1;
+	}if(keys.isDown(keys.RIGHT)){
+		input[0]=1;
+	}if(keys.isDown(keys.UP)){
+		input[1]=-1;
+	}if(keys.isDown(keys.DOWN)){
+		input[1]=1;
 	}
-	if(keys.isDown(keys.RIGHT)){
-		game.player.a[0]+=game.player.s[0];
+
+	if(gamepads.connected){
+		var stick = gamepads.getStick();
+		input[0]+=stick[0];
+		input[1]+=stick[1];
+
+		var dpad = gamepads.getDpad();
+		input[0]+=dpad[0];
+		input[1]+=dpad[1];
 	}
-	if(keys.isDown(keys.UP)){
-		game.player.a[1]-=game.player.s[1];
-	}
-	if(keys.isDown(keys.DOWN)){
-		game.player.a[1]+=game.player.s[1];
-	}
+
+	input[0]=Math.min(1,Math.max(input[0],-1));
+	input[1]=Math.min(1,Math.max(input[1],-1));
+
+	game.player.a=[
+		input[0]*game.player.s[0],
+		input[1]*game.player.s[1]
+	];
 
 	game.player.v=v_add(game.player.v,game.player.a);
 
-	game.player.v[0]*=0.7;
-	game.player.v[1]*=0.7;
+	game.player.v[0]*=0.5;
+	game.player.v[1]*=0.5;
 
 	game.player.x+=game.player.v[0];
 	game.player.y+=game.player.v[1];
