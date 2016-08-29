@@ -215,17 +215,20 @@ function main(){
 	}
 
 	if(inputArtifact){
-		if(seed(game.player.x+game.player.y)()>0.01){
+		var roundX = Math.round(game.player.x / 100) * 100;
+		var roundY = Math.round(game.player.y / 100) * 100;
+		var artNum = roundX + roundY;
+
+		if(seed(artNum)()>0.01 && artifacts[artNum] == null){
 			var artifact = new PIXI.Graphics();
-			artifact = getArtifact(game.player.x+game.player.y);
+			artifact = getArtifact(artNum);
 			artifact.x = game.player.x;
 			artifact.y = game.player.y;
 			game.addChild(artifact);
 
-			$('input').val(game.player.x+game.player.y)
+			$('input').val(artNum)
 
-
-			artifacts.push(artifact);
+			artifacts[artNum] = artifact;
 		}
 	}
 
