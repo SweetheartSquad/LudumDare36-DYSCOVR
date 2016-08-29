@@ -83,8 +83,8 @@ function setup(){
 
 	//game
 	game.bg = new PIXI.Sprite(PIXI.loader.resources.bg.texture);
-	game.bg.width = size[0]*4;
-	game.bg.height = size[1]*4;
+	game.bg.width = size[0];
+	game.bg.height = size[1];
 	game.addChild(game.bg);
 
 	game.player = new PIXI.Container();
@@ -93,8 +93,8 @@ function setup(){
 	game.player.h=size[1]/25;
 	game.player.s=[size[0]/500,size[1]/500];
 
-	game.player.x=10;
-	game.player.y=10;
+	game.player.x=size[0]/2.0;
+	game.player.y=size[1]/2.0;
 	game.player.v=[0,0];
 
 
@@ -124,19 +124,18 @@ function setup(){
 	var style = {
 	    fontFamily: 'font',
 	    fontSize:size[0]/25.0,
-	    fill : '#FFFFFF',
-	    stroke : '#000000',
+	    fill : '#000000',
+	    stroke : '#FFFFFF',
 	    strokeThickness : 0,
 	    dropShadow : true,
-	    dropShadowColor : '#000000',
+	    dropShadowColor : '#BBBBBB',
 	    dropShadowAngle : Math.PI / 2,
-	    dropShadowDistance : size[1]/200.0,
-	    wordWrap : true,
-	    wordWrapWidth : size[0]-size[0]/20.0
+	    dropShadowDistance : size[1]/300.0,
+	    wordWrap : false
 	};
 	var basicText = new PIXI.Text('TextArea',style);
-	basicText.x = size[0]/20.0;
-	basicText.y = size[1]/20.0;
+	basicText.x = size[0]/15.0;
+	basicText.y = size[1]/15.0;
 
 	game.uiText=basicText;
 	overlay.addChild(basicText);
@@ -261,8 +260,8 @@ function main(){
 	+"\ns."+Math.floor(rng()*999)+".t."+Math.floor(rng()*999)
 	+"\nd."+(Math.floor(Date.now()/1000)+1.577e+9);
 
-	renderContainer.overlayScreen1.alpha=0.9*Math.sin(Date.now()/10000+(game.player.x+game.player.y)/500.0);
-	renderContainer.overlayScreen2.alpha=0.2*Math.sin(Date.now()/3000+(game.x+game.y)/100.0);
+	renderContainer.overlayScreen1.alpha=0.6*(Math.sin(Date.now()/7657+(game.player.x)/1111.0))+0.25;
+	renderContainer.overlayScreen2.alpha=0.2*(Math.sin(Date.now()/4567+(game.y)/666.0));
 
 	// shader
 
