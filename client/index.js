@@ -147,12 +147,13 @@ $(document).ready(function(){
 		volume:0.5
 	});
 
-	var textSound = new Howl({
+	textSound = new Howl({
 		urls:["assets/audio/Text.ogg"],
 		autoplay:false,
 		loop:false,
 		volume:1
 	});
+	textSound.letter=100;
 
 	// create renderer
 	size = [512, 512];
@@ -202,18 +203,17 @@ $(document).ready(function(){
 		.load(setup);
 });
 
-
 function updateMessages(){
 	var s=$("#messages-backlog").html();
-	var tick = 0;
 	if(s.length > 0){
-		tick++;
+		var l = s.substr(0,1);
 		$("#messages-backlog").html(s.substr(1));
-		$("#messages-actual").append(s.substr(0,1).replace('\n','<br>'));
-		if (tick == 100) {
+		$("#messages-actual").append(l.replace('\n','<br>'));
+		if (l.trim().length > 0 && ++textSound.letter > 5) {
 			textSound.play();
-			tick = 0;
+			textSound.letter=0;
 		}
+		$("#messages-actual").scrollTop($("#messages-actual")[0].scrollHeight);
 	}
 
 	$("#artifact").val(game.artifactVisible ? game.artNum : "NULL");
