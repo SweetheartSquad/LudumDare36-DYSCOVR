@@ -405,8 +405,8 @@ function main(){
 	}
 
 	// update excavation site
-	game.site.x = Math.round(game.player.x / game.site.gap - 0.5) * game.site.gap;
-	game.site.y = Math.round(game.player.y / game.site.gap - 0.5) * game.site.gap;
+	game.site.x = Math.round((game.player.x+inputCam[0]*size[0]/3) / game.site.gap - 0.5) * game.site.gap;
+	game.site.y = Math.round((game.player.y+inputCam[1]*size[1]/3) / game.site.gap - 0.5) * game.site.gap;
 	game.artNum = Math.round(game.site.x + game.site.y*size[0]*game.site.gap)>>>0;
 	var rng=seed(game.artNum);
 	game.artifactVisible=rng()<0.1;
