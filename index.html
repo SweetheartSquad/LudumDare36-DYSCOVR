@@ -61,6 +61,11 @@
             bottom:0;
         }
 
+        #messages{
+            max-height:200px;
+            overflow-y:scroll;
+        }
+
         #second{
             display:none;
         }
@@ -86,14 +91,14 @@
 
         <br/><br/>
 
-        <label>Artifact: <input id="artifact" value=4 readonly /></label>
+        <label>Artifact: <input id="artifact" value=4 /></label>
 
         <h3>Messages</h3>
         <div id="messages">
-            messages or whatever
+            
         </div>
 
-        <button onclick="getMessages($('input').val(),'timestamp','ASC',function(data){$('#messages').html(data)});">Get messages</button>
+        <button onclick="getMessages($('input').val(),'timestamp','ASC',function(data){var json = $.parseJSON(data);$('#messages').html('');$.each(json.rows, function( idx, obj ){$('#messages').append(obj.timestamp + ': ' + obj.text+'<br/>');});});">Get messages</button>
 
         <div>
             <h3>Write a message</h3>
