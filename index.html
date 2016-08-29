@@ -84,11 +84,16 @@
             welcome to DYSCOVR
         </div>
 
+        <br/><br/>
+
+        <label>Artifact: <input id="artifact" value=4 readonly /></label>
+
         <h3>Messages</h3>
         <div id="messages">
             messages or whatever
         </div>
-        <button onclick="getMessages($('input').val(),'timestamp','ASC',function(data){$('#messages').html(data)});">get messages</button>
+
+        <button onclick="getMessages($('input').val(),'timestamp','ASC',function(data){$('#messages').html(data)});">Get messages</button>
 
         <div>
             <h3>Write a message</h3>
@@ -102,7 +107,6 @@
                 <option value="">---</option>
             </select>
             <br/><br/>
-            <label>artifact (this'll be an in-game thing later)<input id="artifact" value=4 /></label>
             <br/><br/>
             <button onclick="postMessage($('#first').find('option:selected').text()+' '+$('#second').find('option:selected').text()+' '+$('#third').find('option:selected').text()+".", $('#artifact').val());">post a message</button>
         </div>

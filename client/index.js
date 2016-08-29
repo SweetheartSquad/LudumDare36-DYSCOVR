@@ -113,7 +113,6 @@ function setup(){
 
 	game.addChild(game.player);
 
-
 	var overlay = new PIXI.Sprite(PIXI.loader.resources.overlay.texture);
 	overlay.width = size[0];
 	overlay.height = size[1];
@@ -189,6 +188,18 @@ function main(){
 		inputMove[1]=-1;
 	}if(keys.isDown(keys.DOWN)){
 		inputMove[1]=1;
+	}
+
+	if(keys.isJustDown(keys.SPACE)){
+		if(seed(game.player.x+game.player.y)()>0.01){
+			var artifact = new PIXI.Graphics();
+			artifact = getArtifact(game.player.x+game.player.y);
+			artifact.x = game.player.x;
+			artifact.y = game.player.y;
+			game.addChild(artifact);
+
+			$('input').val(game.player.x+game.player.y)
+		}
 	}
 
 	if(gamepads.connected){
