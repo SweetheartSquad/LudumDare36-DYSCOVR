@@ -113,6 +113,7 @@
             <br/><br/>
             <br/><br/>
             <button id="btn-post">post a message</button>
+                <button id="btn-help">help</button>
         </div>
     </section>
     <script>
@@ -194,7 +195,23 @@
                 }
               }
         });
+
+        $("#btn-help").on("click",function(){
+            displayMessage(
+                "DYSCOVR-v0.1.25b.execute('help')..."
+                +"\n"
+                +"\n*** Controls ***"
+                +"\n"
+                +"\n* rover.move = [KEYBOARD.ARROWS] / [JOYSTICK.LEFT]"
+                +"\n* rover.excavate = [KEYBOARD.SPACE] / [JOYSTICK.BTN1]"
+                +"\n"
+
+                +"\n*** About ***"
+                +"\nThis would be a good spot for some flavour text. The DYSCOVR platform was developed by the SweetHeart Squad for Ludum Dare 36 using PIXI.js.");
+        });
+
     });
+    
 
     function updateMessages(){
         var s=$("#messages-backlog").html();
