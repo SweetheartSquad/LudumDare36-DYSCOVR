@@ -12,14 +12,13 @@ $(document).ready(function(){
 		phrase.words = data;
 	});
 
-
-
 	// setup listeners for HTML events
 	
 	$(".btn-up").eq(0).on("click",function(){
 		phrase.first=(phrase.first+1)%phrase.words.first.length;
 		$("#phrase-1").html(phrase.words.first[phrase.first]);
 		$("#phrase-2,#phrase-3").html("---");
+		btnSound.play();
 	});
 	$(".btn-down").eq(0).on("click",function(){
 		phrase.first=phrase.first-1;
@@ -28,11 +27,13 @@ $(document).ready(function(){
 		}
 		$("#phrase-1").html(phrase.words.first[phrase.first]);
 		$("#phrase-2,#phrase-3").html("---");
+		btnSound.play();
 	});
 	
 	$(".btn-up").eq(1).on("click",function(){
 		phrase.second=(phrase.second+1)%phrase.words.second[phrase.first].length;
 		$("#phrase-2").html(phrase.words.second[phrase.first][phrase.second]);
+		btnSound.play();
 	});
 	$(".btn-down").eq(1).on("click",function(){
 		phrase.second=phrase.second-1;
@@ -40,11 +41,13 @@ $(document).ready(function(){
 			phrase.second+=phrase.words.second[phrase.first].length;
 		}
 		$("#phrase-2").html(phrase.words.second[phrase.first][phrase.second]);
+		btnSound.play();
 	});
 	
 	$(".btn-up").eq(2).on("click",function(){
 		phrase.third=(phrase.third+1)%phrase.words.third[phrase.first].length;
 		$("#phrase-3").html(phrase.words.third[phrase.first][phrase.third]);
+		btnSound.play();
 	});
 	$(".btn-down").eq(2).on("click",function(){
 		phrase.third=phrase.third-1;
@@ -52,6 +55,7 @@ $(document).ready(function(){
 			phrase.third+=phrase.words.third[phrase.first].length;
 		}
 		$("#phrase-3").html(phrase.words.third[phrase.first][phrase.third]);
+		btnSound.play();
 	});
 
 
@@ -65,6 +69,8 @@ $(document).ready(function(){
 		}else{
 			displayMessage("ERROR: Description incomplete; please fill out all fields.");
 		}
+
+		btnSound.play();
 	});
 
 	$("#btn-fullscreen").on("click",function(){
@@ -91,6 +97,8 @@ $(document).ready(function(){
 			  document.webkitExitFullscreen();
 			}
 		  }
+
+		  btnSound.play();
 	});
 
 	$("#btn-help").on("click",function(){
@@ -114,6 +122,8 @@ $(document).ready(function(){
 			+"\nWe have comprehensive pricing plans for every space exploration budget."
 			+"\n"
 			+"\nThe DYSCOVR platform was developed by the SweetHeart Squad for Ludum Dare 36 using PIXI.js.");
+
+		btnSound.play();
 	});
 
 
@@ -128,6 +138,21 @@ $(document).ready(function(){
 		volume:0
 	});
 	bgm.fadeIn(1,3000);
+
+	// init UI sound effects
+	var btnSound = new Howl({
+		urls:["assets/audio/Button.ogg"],
+		autoplay:false,
+		loop:false,
+		volume:0.5
+	});
+
+	var textSound = new Howl({
+		urls:["assets/audio/Text.ogg"],
+		autoplay:false,
+		loop:false,
+		volume:1
+	});
 
 	// create renderer
 	size = [512, 512];
@@ -180,9 +205,15 @@ $(document).ready(function(){
 
 function updateMessages(){
 	var s=$("#messages-backlog").html();
+	var tick = 0;
 	if(s.length > 0){
+		tick++;
 		$("#messages-backlog").html(s.substr(1));
 		$("#messages-actual").append(s.substr(0,1).replace('\n','<br>'));
+		if (tick == 100) {
+			textSound.play();
+			tick = 0;
+		}
 	}
 
 	$("#artifact").val(game.artifactVisible ? game.artNum : "NULL");
@@ -367,6 +398,21 @@ var artifacts=[];
 function main(){
 	//renderer.resize((Math.sin(Date.now()/500)+1)*32,128);
 
+	// sound effects
+	var artifactSound = new Howl({
+		urls:["assets/audio/FoundArtifact.ogg"],
+		autoplay:false,
+		loop:false,
+		volume:0.5
+	});
+
+	var nothingSound = new Howl({
+		urls:["assets/audio/FoundNothing.ogg"],
+		autoplay:false,
+		loop:false,
+		volume:0.5
+	});
+
 	for(i in artifacts){
 		artifacts[i].rotate((Math.sin(Date.now()/artifacts[i].rotationTime)+1)/45);
 	}
@@ -430,11 +476,14 @@ function main(){
 				artifact.y = game.site.y+game.site.gap/2;
 				game.addChild(artifact);
 				artifacts[game.artNum] = artifact;
+
+				artifactSound.play();
 			}
 
 			// get the messages for the artifact
 			getMessages(game.artNum);
 		}else{
+			nothingSound.play();
 			displayMessage("Excavation failed; no artifacts in range");
 		}
 	}
