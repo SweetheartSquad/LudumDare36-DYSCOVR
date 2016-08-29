@@ -199,12 +199,38 @@ canvas{
 	height:50%;
 }
 
+#messages::-webkit-scrollbar              {
+	width:1rem;
+	background: transparent;
+}
+#messages::-webkit-scrollbar-button       {
+
+}
+#messages::-webkit-scrollbar-track        {
+	background: transparent;
+
+}
+#messages::-webkit-scrollbar-track-piece  {
+	background: transparent;
+
+}
+#messages::-webkit-scrollbar-thumb        {
+	background: rgb(70,240,120);
+}
+#messages::-webkit-scrollbar-corner       {
+
+}
+#messages::-webkit-resizer                {
+
+}
+
 #messages-actual:after{
 	content:'_';
 	
 	-webkit-animation: blink 0.5s step-end infinite;
 	animation: blink 0.5s step-end infinite;
 }
+
 
 #monitor{
 	box-sizing:border-box;
@@ -287,10 +313,7 @@ canvas{
 	
 	border: solid 0.15rem rgb(50,40,40);
 	border-radius:1rem;
-	padding:3rem;
-
-	padding-left:0;
-	padding-right:0;
+	padding:0.2rem;
 
 	min-width: 30rem;
 	
@@ -366,10 +389,6 @@ canvas{
 	inset 0px -0.3rem 0.5rem 0px rgba(0, 0, 0, .5);
 }
 
-#inputs button:hover{
-
-}
-
 #inputs button:active{
 	margin-top:0.2rem;
 	margin-bottom:0;
@@ -415,8 +434,6 @@ canvas{
 .phrase{
 	display:inline-block;
 }
-.phrase button{
-}
 .phrase-display{
 	position: relative;
 	text-align: center;
@@ -435,7 +452,6 @@ canvas{
 
 	padding:0;
 	margin:0;
-	margin-bottom:1rem;
 
 	padding-top:1rem;
 	padding-bottom:2rem;
