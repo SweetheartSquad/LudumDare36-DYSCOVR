@@ -296,25 +296,23 @@ function setup(){
 	var style = {
 		fontFamily: 'font',
 		fontSize:size[0]/25.0,
-		fill : '#000000',
-		stroke : '#FFFFFF',
-		strokeThickness : 0,
+		fill : 'rgba(0,0,0,0.8)',
 		dropShadow : true,
-		dropShadowColor : '#BBBBBB',
+		dropShadowColor : 'rgba(0,0,0,0.5)',
 		dropShadowAngle : Math.PI / 2,
 		dropShadowDistance : size[1]/300.0,
 		wordWrap : false
 	};
 	var basicText = new PIXI.Text('TextArea',style);
-	basicText.x = size[0]/15.0;
-	basicText.y = size[1]/15.0;
+	basicText.x = size[0]/8.0;
+	basicText.y = size[1]/8.0;
 
 	game.uiText=basicText;
-	overlayDigital.addChild(basicText);
 
 
 	scene.addChild(game);
 	scene.addChild(overlayDigital);
+	scene.addChild(basicText);
 
 
 
