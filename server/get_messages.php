@@ -36,7 +36,7 @@ if(!(
 }
 
 $query="
-SELECT messages.text,messages.rating,messages.timestamp 
+SELECT messages.text,messages.rating,messages.timestamp,messages.messages_id
 FROM (
 	SELECT * 
 	FROM artifact_messages
