@@ -36,9 +36,9 @@ var renderTexture = new PIXI.RenderTexture(brt);
  
 // create a sprite that uses the new render texture...
 // and add it to the stage
-var sprite = new PIXI.Sprite(renderTexture);
-scene.addChild(sprite);	
-
+var renderContainer = new PIXI.Container();
+var renderSprite = new PIXI.Sprite(renderTexture);
+renderContainer.addChild(renderSprite);
 
 function CustomFilter(fragmentSource){
     PIXI.Filter.call(this,
@@ -57,6 +57,7 @@ CustomFilter.prototype.constructor = CustomFilter;
 PIXI.loader
 	.add("player", "assets/img/player.png")
 	.add("bg", "assets/img/bg.png")
+	.add("overlayScreen", "assets/img/overlay-screen.png")
 	.add("overlay", "assets/img/overlay.png")
 	.add('shader','assets/shader.frag');
 
@@ -118,6 +119,29 @@ function setup(){
 	overlay.height = size[1];
 
 
+
+
+	var style = {
+	    fontFamily: 'font',
+	    fontSize:size[0]/25.0,
+	    fill : '#FFFFFF',
+	    stroke : '#000000',
+	    strokeThickness : 0,
+	    dropShadow : true,
+	    dropShadowColor : '#000000',
+	    dropShadowAngle : Math.PI / 2,
+	    dropShadowDistance : size[1]/200.0,
+	    wordWrap : true,
+	    wordWrapWidth : size[0]-size[0]/20.0
+	};
+	var basicText = new PIXI.Text('TextArea',style);
+	basicText.x = size[0]/20.0;
+	basicText.y = size[1]/20.0;
+
+	game.uiText=basicText;
+	overlay.addChild(basicText);
+
+
 	scene.addChild(game);
 	scene.addChild(overlay);
 
@@ -126,7 +150,25 @@ function setup(){
 	// shader
 	var fragmentSrc = PIXI.loader.resources.shader.data;
     filter = new CustomFilter(fragmentSrc);
-    sprite.filters = [filter];
+    renderSprite.filters = [filter];
+
+
+
+
+	renderContainer.overlayScreen1 = new PIXI.Sprite(PIXI.loader.resources.overlayScreen.texture);
+	renderContainer.overlayScreen1.width = size[0];
+	renderContainer.overlayScreen1.height = size[1];
+	renderContainer.overlayScreen1.blendMode = PIXI.BLEND_MODES.MULTIPLY;
+	renderContainer.overlayScreen1.alpha=0.5;
+	renderContainer.addChild(renderContainer.overlayScreen1);
+
+
+	renderContainer.overlayScreen2 = new PIXI.Sprite(PIXI.loader.resources.overlayScreen.texture);
+	renderContainer.overlayScreen2.width = size[0];
+	renderContainer.overlayScreen2.height = size[1];
+	renderContainer.overlayScreen2.blendMode = PIXI.BLEND_MODES.SCREEN;
+	renderContainer.overlayScreen2.alpha=0.75;
+	renderContainer.addChild(renderContainer.overlayScreen2);
 
 	onResize();
 	main();
@@ -214,14 +256,22 @@ function main(){
 	}
 	game.player.treads.endFill();
 
+	var rng=seed(game.player.x+game.player.y);
+	game.uiText.text="DYSCOVR-v0.1.25b\nx."+Math.floor(game.x)+".y."+Math.floor(game.y)
+	+"\ns."+Math.floor(rng()*999)+".t."+Math.floor(rng()*999)
+	+"\nd."+(Math.floor(Date.now()/1000)+1.577e+9);
+
+	renderContainer.overlayScreen1.alpha=0.9*Math.sin(Date.now()/10000+(game.player.x+game.player.y)/500.0);
+	renderContainer.overlayScreen2.alpha=0.2*Math.sin(Date.now()/3000+(game.x+game.y)/100.0);
 
 	// shader
 
     filter.uniforms.time = (Date.now()-startTime)/1000;
     filter.uniforms.camera = [game.x/size[0]/2.0,game.y/size[1]/2.0];
+    filter.uniforms.speed = game.player.v;
 
 	renderer.render(scene,renderTexture);
-	renderer.render(sprite);
+	renderer.render(renderContainer);
 	requestAnimationFrame(main);
 
 	keys.clear();
