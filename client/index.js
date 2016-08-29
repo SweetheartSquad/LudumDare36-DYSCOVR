@@ -177,7 +177,7 @@ var artifacts=[];
 function main(){
 	//renderer.resize((Math.sin(Date.now()/500)+1)*32,128);
 
-	for(var i=0; i<artifacts.length;++i){
+	for(i in artifacts){
 		artifacts[i].rotate((Math.sin(Date.now()/500)+1)/45);
 	}
 
