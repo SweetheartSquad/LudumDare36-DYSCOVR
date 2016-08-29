@@ -80,7 +80,63 @@
 
 
         #plaque{
+            position:relative;
+            text-align: center;
+            margin:2rem;
+            padding:0.5rem;
+            border-radius:0.1rem;
+            background:rgb(230,200,100);
 
+            border: outset 0.15rem rgb(200,150,50);
+
+            color: rgba(100,80,20, 0.8);
+            text-shadow: 0.05rem 0.1rem 0 rgb(230,200,100), 0 0 0 #000, 1px 4px 6px rgb(230,200,100);
+        }
+
+        #plaque h1{
+            font-size:3em;
+            padding:0;
+            margin:0;
+        }
+        #plaque h2{
+            font-size:0.75em;
+            padding:0;
+            margin:0;
+        }
+        #plaque h2 span{
+            display:inline-block;
+        }
+        #plaque div{
+            display:block;
+            position: absolute;
+            width:0.3rem;
+            height:0.3rem;
+
+            border-radius: 50%;/*
+            background:rgb(230,200,100);
+            border: outset 0.1rem rgb(200,150,50);*/
+        
+
+            background: -moz-radial-gradient(25% 25%, ellipse cover,  rgb(250,220,120) 0%, rgb(100,80,20) 100%);
+            background: -webkit-radial-gradient(25% 25%, ellipse cover,  rgb(250,220,120) 0%,rgb(100,80,20) 100%);
+            background: radial-gradient(ellipse at 25% 25%,  rgb(250,220,120) 0%,rgb(100,80,20) 100%);
+
+        }
+        #plaque #ul{
+            top: 0.1rem;
+            left: 0.1rem;
+        }
+        #plaque #ur{
+            top: 0.1rem;
+            right: 0.1rem;
+        }
+        #plaque #bl{
+            bottom: 0.1rem;
+            left: 0.1rem;
+        }
+        #plaque #br{
+            bottom: 0.1rem;
+            right: 0.1rem;
         }
 
 
@@ -232,8 +288,12 @@
     <section id="main">
     <button id="btn-fullscreen">fullscreen</button>
         <div id="plaque">
+            <div id="ul"></div>
+            <div id="ur"></div>
+            <div id="bl"></div>
+            <div id="br"></div>
             <h1>DYSCOVR</h1>
-            <h2>the open source platform for intergalactic archeology</h2>
+            <h2><span>the open source platform for</span> <span>intergalactic archeology</span></h2>
         </div>
 
         <div id="monitor">
