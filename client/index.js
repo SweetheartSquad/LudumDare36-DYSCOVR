@@ -166,7 +166,7 @@ $(document).ready(function(){
 
 	PIXI.loader
 		.add("player", "assets/img/player.png")
-		.add("bg", "assets/img/bg.png")
+		.add("landingSite", "assets/img/landingSite.png")
 		.add("siteMarker", "assets/img/site marker.png")
 		.add("overlayEffects", "assets/img/overlayEffects.png")
 		.add("overlayDigital", "assets/img/overlayDigital.png")
@@ -257,9 +257,9 @@ function setup(){
 	console.log("All files loaded");
 
 	//game
-	game.bg = new PIXI.Sprite(PIXI.loader.resources.bg.texture);
-	game.bg.width = size[0];
-	game.bg.height = size[1];
+	var landingSite = new PIXI.Sprite(PIXI.loader.resources.landingSite.texture);
+	landingSite.width = size[0];
+	landingSite.height = size[1];
 
 	game.site = new PIXI.Sprite(PIXI.loader.resources.siteMarker.texture);
 	game.site.gap=Math.max(size[0],size[1])/5;
@@ -292,7 +292,7 @@ function setup(){
 	game.player.addChild(game.player.treads);
 	game.player.addChild(player_chasis);
 
-	game.addChild(game.bg);
+	game.addChild(landingSite);
 	game.addChild(game.player);
 	game.addChild(game.site);
 
