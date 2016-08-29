@@ -54,6 +54,7 @@ CustomFilter.prototype.constructor = CustomFilter;
 PIXI.loader
 	.add("player", "assets/img/player.png")
 	.add("bg", "assets/img/bg.png")
+	.add("siteMarker", "assets/img/site marker.png")
 	.add("overlayEffects", "assets/img/overlayEffects.png")
 	.add("overlayDigital", "assets/img/overlayDigital.png")
 	.add("overlayHardware", "assets/img/overlayHardware.png")
@@ -85,7 +86,13 @@ function setup(){
 	game.bg = new PIXI.Sprite(PIXI.loader.resources.bg.texture);
 	game.bg.width = size[0];
 	game.bg.height = size[1];
-	game.addChild(game.bg);
+
+	game.site = new PIXI.Sprite(PIXI.loader.resources.siteMarker.texture);
+	game.site.gap=Math.max(size[0],size[1])/5;
+	game.site.x=size[0]/2.0;
+	game.site.y=size[1]/2.0;
+	game.site.width=game.site.gap;
+	game.site.height=game.site.gap;
 
 	game.player = new PIXI.Container();
 
@@ -111,7 +118,9 @@ function setup(){
 	game.player.addChild(game.player.treads);
 	game.player.addChild(player_chasis);
 
+	game.addChild(game.bg);
 	game.addChild(game.player);
+	game.addChild(game.site);
 
 	var overlayDigital = new PIXI.Sprite(PIXI.loader.resources.overlayDigital.texture);
 	overlayDigital.width = size[0];
@@ -224,31 +233,38 @@ function main(){
 		}
 	}
 
-	if(inputArtifact){
-		var roundX = Math.round(game.player.x / (size[0]/10)) * (size[0]/10);
-		var roundY = Math.round(game.player.y / (size[1]/10)) * (size[1]/10);
-		var artNum = Math.round(roundX + roundY);
+	// update excavation site
+	game.site.x = Math.round(game.player.x / game.site.gap - 0.5) * game.site.gap;
+	game.site.y = Math.round(game.player.y / game.site.gap - 0.5) * game.site.gap;
+	game.artNum = Math.round(game.site.x + game.site.y*size[0]*game.site.gap)>>>0;
+	var rng=seed(game.artNum);
+	game.artifactVisible=rng()<0.1;
+	
+	if(game.artifactVisible){
+		game.site.tint=0xFFFFFF;
+	}else{
+		game.site.tint=0x000000;
+	}
 
-		var rng=seed(artNum);
+	if(inputArtifact){
 		// check if an artifact should be here
-		if(rng()<0.1){
+		if(game.artifactVisible){
 
 			// check if an artifact is already here
-			if(artifacts[artNum] == null){
+			if(artifacts[game.artNum] == null){
 				// if not, make one
 				var artifact = new PIXI.Graphics();
-				artifact = getArtifact(artNum);
-				artifact.x = roundX;
-				artifact.y = roundY;
+				artifact = getArtifact(game.artNum);
+				artifact.x = game.site.x+game.site.gap/2;
+				artifact.y = game.site.y+game.site.gap/2;
 				game.addChild(artifact);
-				artifacts[artNum] = artifact;
+				artifacts[game.artNum] = artifact;
 			}
 
 			// get the messages for the artifact
-			$('input').val(artNum);
-			getMessages();
+			getMessages(game.artNum);
 		}else{
-			$("#messages").html("there's no artifact here");
+			displayMessage("Excavation failed; no artifacts in range");
 		}
 	}
 
@@ -311,11 +327,16 @@ function main(){
     filter.uniforms.camera = [game.x/size[0]/2.0,game.y/size[1]/2.0];
     filter.uniforms.speed = game.player.v;
 
+    // render
 	renderer.render(scene,renderTexture);
 	renderer.render(renderContainer);
 	requestAnimationFrame(main);
 
+	// clear inputs for next frame
 	keys.clear();
+
+	// update DOM
+	updateMessages();
 }
 
 function onResize() {

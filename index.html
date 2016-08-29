@@ -90,11 +90,11 @@
         <h2>the open source platform for intergalactic archeology</h2>
     <button id="btn-fullscreen">fullscreen</button>
 
-        <label>Artifact: <input id="artifact" value=4 /></label>
 
         <h3>Messages</h3>
-        <div id="messages">
-            Welcome to the DYSCOVR open beta for project X654 on exo-planet 543.14.543T!
+            <div id="messages-backlog" style="display:none;">Welcome to the DYSCOVR open beta for project X654 on exo-planet 543.14.543T!</div>
+            <div id="messages"></div>
+            <label>Excavation site: <input id="artifact" value="NULL" /></label>
         </div>
 
         <button onclick="getMessages();">Get messages</button>
@@ -196,29 +196,45 @@
         });
     });
 
+    function updateMessages(){
+        var s=$("#messages-backlog").html();
+        if(s.length > 0){
+            $("#messages-backlog").html(s.substr(1));
+            $("#messages").append(s.substr(0,1).replace('\n','<br>'));
+        }
+
+        $("#artifact").val(game.artifactVisible ? game.artNum : "NULL");
+    }
+
+    function displayMessage(s){
+        $("#messages").html("");
+        $("#messages-backlog").html(s);
+    }
 
 
-
-
-    function getMessages(){
-        $("#messages").html("loading...");
+    function getMessages(id){
+        displayMessage("Excavation in progress...");
         client.getMessages(
-            $('input').val(),
+            id,
             'timestamp',
             'ASC',
             function(data){
                 var json = $.parseJSON(data);
-                $('#messages').html('');
+
                 if(json.rows.length > 0){
-                    $.each(json.rows, function( idx, obj ){
-                        $('#messages').append(obj.timestamp + ': ' + obj.text+'<br/>');
-                    });
+                    var s="";
+                    for(var i=0;i < json.rows.length; ++i){
+                        s += (json.rows[i].timestamp + ': ' + json.rows[i].text+'\n');
+                    }
+                    displayMessage(s);
                 }else{
-                    $("#messages").html("no one has described this artifact");
+                    displayMessage("no one has described this artifact");
                 }
             }
         );
     }
+
+
     </script>
 
     <!-- CLIENT SCRIPTS -->
