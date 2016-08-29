@@ -1,7 +1,7 @@
 function getPalette(rng){
 	return [
-		rgb(rng()*255,rng()*255,rng()*255),
-		rgb(rng()*255,rng()*255,rng()*255)
+		rgb(Math.floor(rng()*255),Math.floor(rng()*255),Math.floor(rng()*255)),
+		rgb(Math.floor(rng()*255),Math.floor(rng()*255),Math.floor(rng()*255))
 	];
 }
 
@@ -60,11 +60,11 @@ function getArtifact(_seed){
 	}
 
 	// get bounds
-	var bounds=[9999999,9999999,-9999999,-9999999];
+	var bounds=[Infinity,Infinity,-Infinity,-Infinity];
 	for(var i=0;i<p.length-1;i+=2){
 		bounds[0]=Math.min(bounds[0],p[i]);
-		bounds[2]=Math.max(bounds[2],p[i+1]);
-		bounds[1]=Math.min(bounds[1],p[i]);
+		bounds[2]=Math.max(bounds[2],p[i]);
+		bounds[1]=Math.min(bounds[1],p[i+1]);
 		bounds[3]=Math.max(bounds[3],p[i+1]);
 	}
 
@@ -84,10 +84,10 @@ function getArtifact(_seed){
 	// triangulate
 	var triangles=[];
 	for(var i=0;i<p.length-3;i+=2){
-		triangles.push([0,0,
+		triangles.push(new PIXI.Polygon([0,0,
 			p[i],p[i+1],
 			p[i+2],p[i+3]
-		]);
+		]));
 	}
 	
 	
@@ -95,27 +95,37 @@ function getArtifact(_seed){
 	g.beginFill(0,0);
 	for(var i=0;i<triangles.length;++i){
 		g.lineStyle(5, getArtifact.palette[0], 1);
-		g.moveTo(triangles[i][0],triangles[i][1]);
-		g.lineTo(triangles[i][2],triangles[i][3]);
+		g.moveTo(triangles[i].points[0],triangles[i].points[1]);
+		g.lineTo(triangles[i].points[2],triangles[i].points[3]);
 		g.lineStyle(5, getArtifact.palette[0], 1);
-		g.lineTo(triangles[i][4],triangles[i][5]);
+		g.lineTo(triangles[i].points[4],triangles[i].points[5]);
 	}
 	g.endFill();
 	 
-	
 
-	g.beginFill(getArtifact.palette[0],1);
-	g.lineStyle(0,0,0);
+	// primary
 	for(var i=0;i<triangles.length;++i){
-		g.drawPolygon(triangles[i]);
+		g.beginFill(getArtifact.palette[0]);
+		g.lineStyle(0,0,0);
+		g.moveTo(triangles[i].points[0],triangles[i].points[1]);
+		g.lineTo(triangles[i].points[2],triangles[i].points[3]);
+		g.lineTo(triangles[i].points[4],triangles[i].points[5]);
+		g.lineTo(triangles[i].points[0],triangles[i].points[1]);
+		g.endFill();
 	}
-	g.endFill();
 	
+	// secondary
 	var skip=Math.round(rng()*15+5);
 	g.beginFill(getArtifact.palette[1],1);
 	g.lineStyle(0,0,0);
 	for(var i=0;i<triangles.length;i+=skip){
-		g.drawPolygon(triangles[i]);
+		g.beginFill(getArtifact.palette[1]);
+		g.lineStyle(0,0,0);
+		g.moveTo(triangles[i].points[0],triangles[i].points[1]);
+		g.lineTo(triangles[i].points[2],triangles[i].points[3]);
+		g.lineTo(triangles[i].points[4],triangles[i].points[5]);
+		g.lineTo(triangles[i].points[0],triangles[i].points[1]);
+		g.endFill();
 	}
 	g.endFill();
 
@@ -124,8 +134,6 @@ function getArtifact(_seed){
 	connections.push([p[0],p[1]]);
 	connections.push([p[p.length-2],p[p.length-1]]);
 	connections.push([p[Math.round(p.length/2)],p[Math.round(p.length/2)-1]]);
-	//connections.push([p[Math.round(p.length*3/4)],p[Math.round(p.length*3/4)-1]]);
-	//connections.push([p[Math.round(p.length/4)],p[Math.round(p.length/4)-1]]);
 
 	for(var i=0;i<connections.length;++i){
 		/*
