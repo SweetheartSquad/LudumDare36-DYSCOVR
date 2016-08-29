@@ -10,6 +10,11 @@ var keys={
 	DOWN: 40,
 	SPACE: 32,
 
+	init:function(){
+		$(window).on("keyup",keys.on_up.bind(keys));
+		$(window).on("keydown",keys.on_down.bind(keys));
+	},
+
 	clear:function(){
 		this.justDown=[];
 		this.up=[];

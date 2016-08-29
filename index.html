@@ -98,7 +98,7 @@
             
         </div>
 
-        <button onclick="getMessages($('input').val(),'timestamp','ASC',function(data){var json = $.parseJSON(data);$('#messages').html('');$.each(json.rows, function( idx, obj ){$('#messages').append(obj.timestamp + ': ' + obj.text+'<br/>');});});">Get messages</button>
+        <button onclick="getMessages();">Get messages</button>
 
         <div>
             <h3>Write a message</h3>
@@ -170,9 +170,33 @@
 
 
         $("#btn-post").on("click",function(){
-            postMessage($('#first').find('option:selected').text()+' '+$('#second').find('option:selected').text()+' '+$('#third').find('option:selected').text()+".", $('#artifact').val());
+            client.postMessage($('#first').find('option:selected').text()+' '+$('#second').find('option:selected').text()+' '+$('#third').find('option:selected').text()+".", $('#artifact').val());
         });
     });
+
+
+
+
+
+    function getMessages(){
+        $("#messages").html("loading...");
+        client.getMessages(
+            $('input').val(),
+            'timestamp',
+            'ASC',
+            function(data){
+                var json = $.parseJSON(data);
+                $('#messages').html('');
+                if(json.rows.length > 0){
+                    $.each(json.rows, function( idx, obj ){
+                        $('#messages').append(obj.timestamp + ': ' + obj.text+'<br/>');
+                    });
+                }else{
+                    $("#messages").html("no one has described this artifact");
+                }
+            }
+        );
+    }
 </script>
 
     <!-- CLIENT SCRIPTS -->

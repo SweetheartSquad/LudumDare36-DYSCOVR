@@ -1,6 +1,3 @@
-$(window).on("keyup",keys.on_up.bind(keys));
-$(window).on("keydown",keys.on_down.bind(keys));
-
 var startTime=Date.now();
 var bgm = new Howl({
 	urls:["assets/audio/BG.ogg"],
@@ -17,11 +14,11 @@ var renderer = PIXI.autoDetectRenderer(
 	{antiAlias:false, transparent:false, resolution:1,
 		roundPixels:true}
 );
+renderer.visible=false;
 PIXI.SCALE_MODES.DEFAULT = PIXI.SCALE_MODES.NEAREST;
 renderer.backgroundColor = 0x375949;
 renderer.view.style.position = "absolute";
-renderer.view.style.display = "block";
-window.onresize = onResize;
+renderer.view.style.display = "none";
 
 // add the canvas to the html document
 $("#display").append(renderer.view);
@@ -76,6 +73,7 @@ function loadProgressHandler(loader, resource){
 var game = new PIXI.Container();
 
 function setup(){
+	keys.init();
 	gamepads.init();
 
 	// called when loader completes
@@ -170,6 +168,10 @@ function setup(){
 
 	onResize();
 	main();
+
+
+	// unhide the renderer
+	renderer.view.style.display = "block";
 }
 
 var artifacts=[];
@@ -215,20 +217,30 @@ function main(){
 	}
 
 	if(inputArtifact){
-		var roundX = Math.round(game.player.x / 100) * 100;
-		var roundY = Math.round(game.player.y / 100) * 100;
-		var artNum = roundX + roundY;
+		var roundX = Math.round(game.player.x / (size[0]/10)) * (size[0]/10);
+		var roundY = Math.round(game.player.y / (size[1]/10)) * (size[1]/10);
+		var artNum = Math.round(roundX + roundY);
 
-		if(seed(artNum)()>0.01 && artifacts[artNum] == null){
-			var artifact = new PIXI.Graphics();
-			artifact = getArtifact(artNum);
-			artifact.x = game.player.x;
-			artifact.y = game.player.y;
-			game.addChild(artifact);
+		var rng=seed(artNum);
+		// check if an artifact should be here
+		if(rng()<0.1){
 
-			$('input').val(artNum)
+			// check if an artifact is already here
+			if(artifacts[artNum] == null){
+				// if not, make one
+				var artifact = new PIXI.Graphics();
+				artifact = getArtifact(artNum);
+				artifact.x = roundX;
+				artifact.y = roundY;
+				game.addChild(artifact);
+				artifacts[artNum] = artifact;
+			}
 
-			artifacts[artNum] = artifact;
+			// get the messages for the artifact
+			$('input').val(artNum);
+			getMessages();
+		}else{
+			$("#messages").html("there's no artifact here");
 		}
 	}
 
@@ -258,13 +270,6 @@ function main(){
 	game.x=lerp(game.x,-(game.player.x-size[0]/2+game.player.v[0]*size[0]/16 + inputCam[0]*size[0]/3 ),0.1);
 	game.y=lerp(game.y,-(game.player.y-size[1]/2+game.player.v[1]*size[1]/16 + inputCam[1]*size[1]/3 ),0.1);
 
-
-	/*if(game.artifact!==null){
-		game.removeChild(game.artifact);
-		game.artifact=null;
-	}
-	game.artifact = getArtifact(Math.floor(Date.now()/1600));
-	game.addChild(game.artifact);*/
 
 	// redraw player treads
 	var a=-game.player.w*2/3;

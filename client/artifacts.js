@@ -143,7 +143,7 @@ function getArtifact(_seed){
 		g.drawCircle(connections[i][0],connections[i][1],5);
 		g.endFill();*/
 
-		if(i!=0 && rng() < 0.9*1/(getArtifact.recursion*getArtifact.recursion)){
+		if(i!=0 && getArtifact.recursion < 5 && rng() < 0.9*1/(getArtifact.recursion*getArtifact.recursion)){
 			var child = getArtifact(rng()*10000);
 			g.addChild(child);
 
