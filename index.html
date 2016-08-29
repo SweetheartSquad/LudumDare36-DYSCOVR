@@ -12,7 +12,7 @@
         html,body{
             padding:0;
             margin:0;
-            background: transparent;
+            background: #000;
             color:#FFF;
         }
         *{
@@ -38,13 +38,15 @@
             right:0;
             bottom:0;
             margin:auto;
-            background: #000;
+            background: #000;/*
+            width:100%!important;
+            height:100%!important;*/
         }
 
         #main{
             display:block;
             position:absolute;
-            background:#000;
+            background:transparent;
 
             width:43.75%; /* 1-split */
 
@@ -83,11 +85,14 @@
         }
 
 
+        #plaque,#monitor,#inputs{
+            margin:0.5rem;
+            box-sizing:border-box;
+        }
 
         #plaque{
             position:relative;
             text-align: center;
-            margin:2rem;
             padding:0.5rem;
             border-radius:0.1rem;
             background:rgb(230,200,100);
@@ -111,7 +116,7 @@
         #plaque h2 span{
             display:inline-block;
         }
-        #plaque div{
+        #plaque .corner{
             display:block;
             position: absolute;
             width:0.3rem;
@@ -127,21 +132,21 @@
             background: radial-gradient(ellipse at 25% 25%,  rgb(250,220,120) 0%,rgb(100,80,20) 100%);
 
         }
-        #plaque #ul{
-            top: 0.1rem;
-            left: 0.1rem;
+        .ul{
+            top: 0.5rem;
+            left: 0.5rem;
         }
-        #plaque #ur{
-            top: 0.1rem;
-            right: 0.1rem;
+        .ur{
+            top: 0.5rem;
+            right: 0.5rem;
         }
-        #plaque #bl{
-            bottom: 0.1rem;
-            left: 0.1rem;
+        .bl{
+            bottom: 0.5rem;
+            left: 0.5rem;
         }
-        #plaque #br{
-            bottom: 0.1rem;
-            right: 0.1rem;
+        .br{
+            bottom: 0.5rem;
+            right: 0.5rem;
         }
 
 
@@ -176,7 +181,6 @@
 
             position:relative;
 
-            width:100%;
             height:50%;
             border: inset 1rem rgb(10,20,5);
             border-radius:2rem;
@@ -245,11 +249,120 @@
         }
 
         #inputs{
+            padding:0.5rem;
+            
+            border: ridge 0.3rem rgb(50,40,40);
+            border-radius:1rem;
+            padding:3rem;
+            
+
+            position:relative;
+            background-image: -moz-radial-gradient(rgb(140,100,70),rgb(90,60,40));
+            background-image: -webkit-radial-gradient(rgb(140,100,70),rgb(90,60,40));
+            background-image: radial-gradient(rgb(140,100,70),rgb(90,60,40));
+        }
+
+        #inputs:before {
+            content: "";
+            display: block;
+            height: 100%;
+            width: 100%;
+            top:0;
+            left:0;
+            position: absolute;
+
+            background-image:
+            -webkit-repeating-linear-gradient(top, rgba(50,40,40,.042) 0%, transparent 10%),
+            -webkit-repeating-linear-gradient(top, rgba(50,40,40,.032) 0%, transparent 10%),
+            -webkit-repeating-linear-gradient(top, transparent 0%, rgba(50,40,40,.075) 10%),
+            -webkit-repeating-linear-gradient(top, transparent 0%, rgba(50,40,40,.08) 10%);
+            background-image:
+            -moz-repeating-linear-gradient(top, rgba(50,40,40,.042) 0%, transparent 10%),
+            -moz-repeating-linear-gradient(top, rgba(50,40,40,.032) 0%, transparent 10%),
+            -moz-repeating-linear-gradient(top, transparent 0%, rgba(50,40,40,.075) 10%),
+            -moz-repeating-linear-gradient(top, transparent 0%, rgba(50,40,40,.08) 10%);
+            background-image:
+            repeating-linear-gradient(top, rgba(50,40,40,.042) 0%, transparent 10%),
+            repeating-linear-gradient(top, rgba(50,40,40,.032) 0%, transparent 10%),
+            repeating-linear-gradient(top, transparent 0%, rgba(50,40,40,.075) 10%),
+            repeating-linear-gradient(to top, transparent 0%, rgba(50,40,40,.08) 10%);
+
+
+            pointer-events:none;
+        }
+
+        #inputs button{
+            display:inline-block;
+            vertical-align: middle;
+            border:0;
+            border-radius:0.2rem;
+
+            margin-top:0;
+            margin-left:0.1rem;
+            margin-right:0.1rem;
+
+            width:8rem;
+            height:0;
+            padding-top:0.2rem;
+            padding-bottom:1.8rem;
+
+            margin-bottom:0.2rem;
+
+            background: rgb(224,208,181);
+            background: -moz-linear-gradient(top,  rgba(224,208,181,1) 0%, rgba(247,229,200,1) 75%, rgba(178,171,151,1) 75%, rgba(109,105,93,1) 100%);
+            background: -webkit-linear-gradient(top,  rgba(224,208,181,1) 0%,rgba(247,229,200,1) 75%,rgba(178,171,151,1) 75%,rgba(109,105,93,1) 100%);
+            background: linear-gradient(to bottom,  rgba(224,208,181,1) 0%,rgba(247,229,200,1) 75%,rgba(178,171,151,1) 75%,rgba(109,105,93,1) 100%);
+
+            box-shadow:
+            0px 0.1rem 0px 0px rgb(34,34,34),
+            0px 0.5rem 0.7rem 0px rgb(17,17,17),
+            inset 0px 0.01rem 0.01rem 0px rgba(250, 250, 250, .2),
+            inset 0px -0.3rem 0.5rem 0px rgba(0, 0, 0, .5);
+        }
+
+        #inputs button:hover{
 
         }
 
+        #inputs button:active{
+            margin-top:0.2rem;
+            margin-bottom:0;
+            margin-left:0.3rem;
+            margin-right:0.3rem;
 
+            padding-top:0.3rem;
+            padding-bottom:1.7rem;
 
+            width:7.6rem;
+
+            background: rgb(224,208,181);
+            background: -moz-linear-gradient(top,  rgba(224,208,181,1) 0%, rgba(247,229,200,1) 85%, rgba(178,171,151,1) 85%, rgba(109,105,93,1) 100%);
+            background: -webkit-linear-gradient(top,  rgba(224,208,181,1) 0%,rgba(247,229,200,1) 85%,rgba(178,171,151,1) 85%,rgba(109,105,93,1) 100%);
+            background: linear-gradient(to bottom,  rgba(224,208,181,1) 0%,rgba(247,229,200,1) 85%,rgba(178,171,151,1) 85%,rgba(109,105,93,1) 100%);
+
+            box-shadow:
+            0px 0.1rem 0px 0px rgb(34,34,34),
+            0px 0.3rem 0.5rem 0px rgb(17,17,17),
+            inset 0px 0.01rem 0.01rem 0px rgba(250, 250, 250, .2),
+            inset 0px -0.3rem 0.5rem 0px rgba(0, 0, 0, .5);
+        }
+
+        #inputs .corner{
+            display:block;
+            position: absolute;
+            width:0.7rem;
+            height:0.7rem;
+
+            border-radius: 50%;/*
+            background:rgb(230,200,100);
+            border: outset 0.1rem rgb(200,150,50);*/
+        
+
+            background: -moz-radial-gradient(25% 25%, ellipse cover,  rgb(224,208,181) 0%, rgb(50,40,40) 100%);
+            background: -webkit-radial-gradient(25% 25%, ellipse cover,  rgb(224,208,181) 0%,rgb(50,40,40) 100%);
+            background: radial-gradient(ellipse at 25% 25%,  rgb(224,208,181) 0%,rgb(50,40,40) 100%);
+
+        }
 
 
 
@@ -291,12 +404,11 @@
 
     <!-- HTML SECTION -->
     <section id="main">
-    <button id="btn-fullscreen">fullscreen</button>
         <div id="plaque">
-            <div id="ul"></div>
-            <div id="ur"></div>
-            <div id="bl"></div>
-            <div id="br"></div>
+            <div class="corner ul"></div>
+            <div class="corner ur"></div>
+            <div class="corner bl"></div>
+            <div class="corner br"></div>
             <h1>DYSCOVR</h1>
             <h2><span>the open source platform for</span> <span>intergalactic archeology</span></h2>
         </div>
@@ -312,6 +424,12 @@
         </div>
 
         <div id="inputs">
+            <div class="corner ul"></div>
+            <div class="corner ur"></div>
+            <div class="corner bl"></div>
+            <div class="corner br"></div>
+
+            <button id="btn-fullscreen">fullscreen</button>
             <button onclick="getMessages();">Get messages</button>
 
             <div>
