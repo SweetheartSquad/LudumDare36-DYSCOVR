@@ -139,12 +139,19 @@ $(document).ready(function(){
 	});
 	bgm.fadeIn(1,3000);
 
-	// init sound effects
+	// init UI sound effects
 	var btnSound = new Howl({
 		urls:["assets/audio/Button.ogg"],
 		autoplay:false,
 		loop:false,
 		volume:0.5
+	});
+
+	var textSound = new Howl({
+		urls:["assets/audio/Text.ogg"],
+		autoplay:false,
+		loop:false,
+		volume:1
 	});
 
 	// create renderer
@@ -198,9 +205,15 @@ $(document).ready(function(){
 
 function updateMessages(){
 	var s=$("#messages-backlog").html();
+	var tick = 0;
 	if(s.length > 0){
+		tick++;
 		$("#messages-backlog").html(s.substr(1));
 		$("#messages-actual").append(s.substr(0,1).replace('\n','<br>'));
+		if (tick == 100) {
+			textSound.play();
+			tick = 0;
+		}
 	}
 
 	$("#artifact").val(game.artifactVisible ? game.artNum : "NULL");
