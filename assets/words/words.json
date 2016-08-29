@@ -4,8 +4,8 @@
 		"You can use this to"
 	],
 
-	"second1":
-	[
+	"second":
+	[[
 		"wooden",
 		"metallic",
 		"ivory",
@@ -23,10 +23,7 @@
 		"confusing",
 		"industrial",
 		"miniature"
-	],
-
-	"second2":
-	[
+	],[
 		"kill",
 		"dig",
 		"drill",
@@ -40,10 +37,10 @@
 		"clean",
 		"weld",
 		"shape"
-	],
+	]],
 
-	"third1":
-	[
+	"third":
+	[[
 		"killer",
 		"digger",
 		"driller",
@@ -57,10 +54,7 @@
 		"cleaner",
 		"welder",
 		"shaper"
-	],
-
-	"third2":
-	[
+	],[
 		"rocks",
 		"trees",
 		"jewellry",
@@ -77,6 +71,6 @@
 		"metal",
 		"trees",
 		"animals"
-	]
+	]]
 
 }

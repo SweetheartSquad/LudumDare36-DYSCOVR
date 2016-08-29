@@ -1,58 +1,70 @@
+var phrase={
+	words:[],
+	first:0,
+	second:0,
+	third:0
+};
+
 $(document).ready(function(){
 
 	// get wordlists
 	$.getJSON("assets/words/words.json", function(data){
-		$('#first').empty();
-		$('#first').append($('<option>').text("---"));
-		$.each( data.first, function( key, val ) {
-				$('#first').append($('<option>').text(val).attr('value', key));
-		});
+		phrase.words = data;
 	});
 
 
 
 	// setup listeners for HTML events
-	$('#first').on("change",function() {
-		$('#second').show();
-		$('#third').hide();
-
-		$.getJSON("assets/words/words.json", function(data){
-			$('#second').empty();
-			$('#second').append($('<option>').text("---"));
-			
-			if ($('#first').val() === '0') {
-				$.each( data.second1, function( key, val ) {
-					$('#second').append($('<option>').text(val).attr('value', key));
-				});
-			} else if ($('#first').val() === '1') {
-				$.each( data.second2, function( key, val ) {
-				$('#second').append($('<option>').text(val).attr('value', key));
-				});
-			} 
-		});
+	
+	$(".btn-up").eq(0).on("click",function(){
+		phrase.first=(phrase.first+1)%phrase.words.first.length;
+		$("#phrase-1").html(phrase.words.first[phrase.first]);
+		$("#phrase-2,#phrase-3").html("---");
 	});
-
-	$('#second').on("change",function() {
-		$('#third').show();
-
-		$.getJSON("assets/words/words.json", function(data){
-			$('#third').empty();
-			$('#third').append($('<option>').text("---"));
-			if ($('#first').val() === '0') {
-				$.each( data.third1, function( key, val ) {
-					$('#third').append($('<option>').text(val).attr('value', key));
-				});
-			} else if ($('#first').val() === '1') {
-				$.each( data.third2, function( key, val ) {
-					$('#third').append($('<option>').text(val).attr('value', key));
-				});
-			} 
-		});
+	$(".btn-down").eq(0).on("click",function(){
+		phrase.first=phrase.first-1;
+		if(phrase.first < 0){
+			phrase.first+=phrase.words.first.length;
+		}
+		$("#phrase-1").html(phrase.words.first[phrase.first]);
+		$("#phrase-2,#phrase-3").html("---");
+	});
+	
+	$(".btn-up").eq(1).on("click",function(){
+		phrase.second=(phrase.second+1)%phrase.words.second[phrase.first].length;
+		$("#phrase-2").html(phrase.words.second[phrase.first][phrase.second]);
+	});
+	$(".btn-down").eq(1).on("click",function(){
+		phrase.second=phrase.second-1;
+		if(phrase.second < 0){
+			phrase.second+=phrase.words.second[phrase.first].length;
+		}
+		$("#phrase-2").html(phrase.words.second[phrase.first][phrase.second]);
+	});
+	
+	$(".btn-up").eq(2).on("click",function(){
+		phrase.third=(phrase.third+1)%phrase.words.third[phrase.first].length;
+		$("#phrase-3").html(phrase.words.third[phrase.first][phrase.third]);
+	});
+	$(".btn-down").eq(2).on("click",function(){
+		phrase.third=phrase.third-1;
+		if(phrase.third < 0){
+			phrase.third+=phrase.words.third[phrase.first].length;
+		}
+		$("#phrase-3").html(phrase.words.third[phrase.first][phrase.third]);
 	});
 
 
 	$("#btn-post").on("click",function(){
-		client.postMessage($('#first').find('option:selected').text()+' '+$('#second').find('option:selected').text()+' '+$('#third').find('option:selected').text()+".", $('#artifact').val());
+		var p1=$('#phrase-1').html();
+		var p2=$('#phrase-2').html();
+		var p3=$('#phrase-3').html();
+
+		if(p3!="---" && p2!="---" && p1!="---"){
+			client.postMessage(p1+' '+p2+' '+p3+".", $('#artifact').val());
+		}else{
+			displayMessage("ERROR: Description incomplete; please fill out all fields.");
+		}
 	});
 
 	$("#btn-fullscreen").on("click",function(){
