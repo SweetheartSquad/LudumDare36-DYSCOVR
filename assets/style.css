@@ -45,6 +45,12 @@ canvas{
 	bottom:0;
 	margin:auto;
 	background: #000;
+
+	opacity:0;
+
+	transition: opacity 1s ease-out;
+    -webkit-transition: opacity 1s ease-out;
+    -moz-transition: opacity 1s ease-out;
 }
 
 #canvas-overlay{
@@ -54,6 +60,7 @@ canvas{
 	right:0;
 	bottom:0;
 	margin:auto;
+
 	background: transparent url("img/overlayHardware.png");
 	background-size: cover;
 

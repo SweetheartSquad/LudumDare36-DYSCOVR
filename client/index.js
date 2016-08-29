@@ -127,6 +127,7 @@ $(document).ready(function(){
 			roundPixels:true}
 	);
 	renderer.visible=false;
+	renderer.view.style.opacity = "0";
 	PIXI.SCALE_MODES.DEFAULT = PIXI.SCALE_MODES.NEAREST;
 
 	// add the canvas to the html document
@@ -230,6 +231,9 @@ function loadProgressHandler(loader, resource){
 
 	console.log("loading: " + resource.url);
 	console.log("progress: " + loader.progress+"%");
+
+
+	$("#canvas-overlay pre").append("\n\t\t\t"+loader.progress+"...");
 }
 
 var game = new PIXI.Container();
@@ -344,6 +348,10 @@ function setup(){
 
 	// unhide the renderer
 	renderer.view.style.display = "block";
+	setTimeout(function(){
+		$("#canvas-overlay").html("");
+		renderer.view.style.opacity = "1";
+	},1000);
 }
 
 var artifacts=[];
