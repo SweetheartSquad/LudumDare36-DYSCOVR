@@ -184,6 +184,7 @@ function main(){
 	// get inputs
 	var inputMove=[0,0];
 	var inputCam=[0,0];
+	var inputArtifact=false;
 
 	if(keys.isDown(keys.LEFT)){
 		inputMove[0]=-1;
@@ -193,21 +194,8 @@ function main(){
 		inputMove[1]=-1;
 	}if(keys.isDown(keys.DOWN)){
 		inputMove[1]=1;
-	}
-
-	if(keys.isJustDown(keys.SPACE)){
-		if(seed(game.player.x+game.player.y)()>0.01){
-			var artifact = new PIXI.Graphics();
-			artifact = getArtifact(game.player.x+game.player.y);
-			artifact.x = game.player.x;
-			artifact.y = game.player.y;
-			game.addChild(artifact);
-
-			$('input').val(game.player.x+game.player.y)
-
-
-			artifacts.push(artifact);
-		}
+	}if(keys.isJustDown(keys.SPACE)){
+		inputArtifact=true;
 	}
 
 	if(gamepads.connected){
@@ -220,6 +208,25 @@ function main(){
 		var dpad = gamepads.getDpad();
 		inputMove[0]+=dpad[0];
 		inputMove[1]+=dpad[1];
+
+		if(navigator.getGamepads()[0].buttons[0].pressed){
+			inputArtifact=true;
+		}
+	}
+
+	if(inputArtifact){
+		if(seed(game.player.x+game.player.y)()>0.01){
+			var artifact = new PIXI.Graphics();
+			artifact = getArtifact(game.player.x+game.player.y);
+			artifact.x = game.player.x;
+			artifact.y = game.player.y;
+			game.addChild(artifact);
+
+			$('input').val(game.player.x+game.player.y)
+
+
+			artifacts.push(artifact);
+		}
 	}
 
 	inputMove[0]=Math.min(1,Math.max(inputMove[0],-1));
