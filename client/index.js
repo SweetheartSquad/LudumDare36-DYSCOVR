@@ -172,9 +172,14 @@ function setup(){
 	main();
 }
 
+var artifacts=[];
+
 function main(){
 	//renderer.resize((Math.sin(Date.now()/500)+1)*32,128);
 
+	for(var i=0; i<artifacts.length;++i){
+		artifacts[i].rotate((Math.sin(Date.now()/500)+1)/45);
+	}
 
 	// get inputs
 	var inputMove=[0,0];
@@ -199,6 +204,9 @@ function main(){
 			game.addChild(artifact);
 
 			$('input').val(game.player.x+game.player.y)
+
+
+			artifacts.push(artifact);
 		}
 	}
 

@@ -148,11 +148,19 @@ function getArtifact(_seed){
 	g.pivot.x=connections[0][0];
 	g.pivot.y=connections[0][1];
 
-	g.rotation=Math.sin(Date.now()/500)*Math.PI;
+	g.rotation=rng();
+	g.rotationMult=rng();
 
 	g.x=size[0]/2;
 	g.y=size[1]/2;
 
+
+	g.rotate=function(a){
+		g.rotation += a*g.rotationMult;
+		for(var i=0; i < g.children.length; ++i){
+			g.children[i].rotate(a);
+		}
+	}
 
 	--getArtifact.recursion;
 
