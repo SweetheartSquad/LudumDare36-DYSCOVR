@@ -393,7 +393,7 @@ function main(){
 		inputMove[0]+=dpad[0];
 		inputMove[1]+=dpad[1];
 
-		if(navigator.getGamepads()[0].buttons[0].pressed){
+		if(gamepads.isJustDown(0)){
 			inputArtifact=true;
 		}
 	}
@@ -499,6 +499,7 @@ function main(){
 
 	// clear inputs for next frame
 	keys.clear();
+	gamepads.update();
 
 	// update DOM
 	updateMessages();

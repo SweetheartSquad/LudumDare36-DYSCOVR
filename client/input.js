@@ -2,7 +2,7 @@
 var keys={
 	down:[],
 	justDown:[],
-	up:[],
+	justUp:[],
 
 	LEFT: 37,
 	UP: 38,
@@ -17,7 +17,7 @@ var keys={
 
 	clear:function(){
 		this.justDown=[];
-		this.up=[];
+		this.justUp=[];
 	},
 
 
@@ -30,16 +30,19 @@ var keys={
 	on_up:function(event){
 		this.down[event.keyCode]=false;
 		this.justDown[event.keyCode]=false;
-		this.up[event.keyCode]=true;
+		this.justUp[event.keyCode]=true;
 	},
 
 	isDown:function(_key){
 		return this.down[_key]===true;
 	},
+	isUp:function(_key){
+		return !this.isDown(_key);
+	},
 	isJustDown:function(_key){
 		return this.justDown[_key]===true;
 	},
-	isUp:function(_key){
+	isJustUp:function(_key){
 		return this.up[_key]===true;
 	}
 };
@@ -49,25 +52,34 @@ var gamepads={
 		return "getGamepads" in navigator;
 	},
 
+	gamepad:null,
+
 	connected:false,
 	deadZone:0.25,
+
+	down:[],
+	justDown:[],
+	justUp:[],
 
 	init:function(){
 		if(this.available()){
 			// listen to connection events for firefox
 	        $(window).on("gamepadconnected", function() {
 	        	this.connected=true;
+	        	this.gamepad = navigator.getGamepads()[0];
 	            console.log("gamepad connection event");
 	        }.bind(this));
 
 	        $(window).on("gamepaddisconnected", function() {
 	        	this.connected=false;
+	        	this.gamepad=null;
 	            console.log("gamepad disconnection event");
 	        }.bind(this));
 
 	        // poll for connections chrome
             var pollForPad = window.setInterval(function() {
-                if(navigator.getGamepads()[0]) {
+                this.gamepad=navigator.getGamepads()[0];
+                if(this.gamepad) {
                     if(!this.connected){
                     	$(window).trigger("gamepadconnected");
                     }
@@ -78,12 +90,23 @@ var gamepads={
 	},
 
 	update:function(){
-
+		if(this.gamepad!=null){
+			for(var i=0; i < this.gamepad.buttons.length; ++i){
+				if(this.gamepad.buttons[i].pressed){
+					this.justDown[i]=!(this.down[i]===true);
+					this.down[i]=true;
+					this.justUp[i]=false;
+				}else{
+					this.justUp[i]=this.down[i]===true;
+					this.down[i]=false;
+					this.justDown[i]=false;
+				}
+			}
+		}
 	},
 
 	getStick: function(){
-		var gamepad=navigator.getGamepads()[0];
-		var stick=gamepad.axes.slice();
+		var stick=this.gamepad.axes.slice();
 
 		for(var i=0;i<stick.length;++i){
 			if(Math.abs(stick[i]) < this.deadZone){
@@ -94,18 +117,30 @@ var gamepads={
 	},
 
 	getDpad: function(){
-		var gamepad=navigator.getGamepads()[0];
 		var dpad=[0,0];
-		if(gamepad.buttons[15].pressed){
+		if(this.gamepad.buttons[15].pressed){
 			dpad[0]+=1;
-		}if(gamepad.buttons[14].pressed){
+		}if(this.gamepad.buttons[14].pressed){
 			dpad[0]-=1;
 		}
-		if(gamepad.buttons[13].pressed){
+		if(this.gamepad.buttons[13].pressed){
 			dpad[1]+=1;
-		}if(gamepad.buttons[12].pressed){
+		}if(this.gamepad.buttons[12].pressed){
 			dpad[1]-=1;
 		}
 		return dpad;
+	},
+
+	isDown:function(_btn){
+		return this.down[_btn]===true;
+	},
+	isUp:function(_btn){
+		return !this.isDown(_btn);
+	},
+	isJustDown:function(_btn){
+		return this.justDown[_btn]===true;
+	},
+	isJustUp:function(_btn){
+		return this.justUp[_btn]===true;
 	}
 };
