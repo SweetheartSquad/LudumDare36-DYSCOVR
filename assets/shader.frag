@@ -1,7 +1,6 @@
 precision mediump float;
 
 varying vec2 vTextureCoord;
-varying vec4 vColor;
 
 uniform sampler2D uSampler;
 uniform float time;
@@ -12,11 +11,6 @@ uniform vec2 speed;
 float rand(vec2 co){
 	return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
 }
-
-float rand(float x,float y){
-	return rand(vec2(x,y));
-}
-
 
 
 
@@ -37,22 +31,20 @@ float noise(vec2 p){
 vec3 terrain(vec2 pos){
 	vec3 result = vec3(0.0);
 
-	float n=noise(pos*512.23450)/3.0+noise(pos*256.05435)/2.0*noise(pos*64.234350);
-	n-=(noise(pos*10.3450)/noise(pos*20.02345)+noise(pos*30.23450))/20.0;
-	n+=noise(pos*50.23450);
-	n+=0.1;
-	n*=0.9;
+	float n=
+	(noise(pos*512.23450)/3.0+noise(pos*256.05435)/2.0*noise(pos*64.234350)
+	-(noise(pos*10.3450)/noise(pos*20.02345)+noise(pos*30.23450))/20.0
+	+noise(pos*50.23450)
+	+0.1)*0.9;
 
 	result.rgb = vec3(n);
-	result.r+=(noise(pos*0.532)*sin(pos.x*0.01123)*sin(pos.y*0.1234))/4.0+0.5;
-	result.g+=(noise(pos*0.5123)*sin(pos.x*0.1232)*sin(pos.y*0.0463))/4.0+0.5;
-	result.b+=(noise(pos*0.5435)*sin(pos.x*0.33123)*sin(pos.y*0.11123))/4.0+0.5;
+	result.r+=(noise(pos*0.532)*sin(pos.x*0.01123)*sin(pos.y*0.1234))/4.0+0.5
+	+(noise(pos*12.5430) > sin(pos.x*0.614) ? sin(pos.x+noise(pos*0.7123))/4.0+0.5 : 0.0);
+	result.g+=(noise(pos*0.5123)*sin(pos.x*0.1232)*sin(pos.y*0.0463))/4.0+0.5
+	+(noise(pos*12.1230) > sin(pos.y*0.397) ? sin(pos.x+noise(pos*0.234523))/4.0+0.5 : 0.0);
+	result.b+=(noise(pos*0.5435)*sin(pos.x*0.33123)*sin(pos.y*0.11123))/4.0+0.5
+	+(noise(pos*12.34260) > sin(pos.x*0.1274) ? sin(pos.y+noise(pos*0.6744123))/4.0+0.5 : 0.0);
 
-	result.r+=noise(pos*12.5430) > sin(pos.x*0.614) ? sin(pos.x+noise(pos*0.7123))/4.0+0.5 : 0.0;
-
-	result.g+=noise(pos*12.1230) > sin(pos.y*0.397) ? sin(pos.x+noise(pos*0.234523))/4.0+0.5 : 0.0;
-
-	result.b+=noise(pos*12.34260) > sin(pos.x*0.1274) ? sin(pos.y+noise(pos*0.6744123))/4.0+0.5 : 0.0;
 
 	n=(result.r+result.b+result.g)/3.0;
 	result.r=result.r+(n-result.r)*(noise(pos*0.654)/4.0+0.5);
@@ -89,14 +81,10 @@ void main(void)
 
 	uvs+=rand(uvBlock)*length(speed)/100.0*vignetteBlock;
 
-	uvs.x=mod(uvs.x,0.5);
-	uvs.y=mod(uvs.y,0.5);
-
-
-
-
 	vec4 fg = texture2D(uSampler, uvs);
-	fg.rgb=mix(terrain(-uvs+camera),fg.rgb,fg.a);
+	vec2 pos=-uvs+camera;
+	fg.rgb=mix(terrain(pos),fg.rgb,fg.a);
+	fg.rgb=mix(vec3(noise(pos*64.0)*noise(pos*56.0)),fg.rgb,1.0-fg.a/4.0);
 	vec4 fgBlock = texture2D(uSampler, uvBlock);
 	fgBlock.rgb=mix(terrain(-uvBlock+camera),fgBlock.rgb,fg.a);
 
@@ -122,24 +110,3 @@ void main(void)
 
 	gl_FragColor = fg;
 }
-
-
-
-//no post-processing
-void main2(void)
-{
-
-	vec2 blockSize=vec2(32.0,64.0);
-
-	float t=time;
-
-	vec2 uvs = mod(vTextureCoord.xy,0.5);
-	vec4 fg = texture2D(uSampler, uvs);
-	if(fg.rgb==vec3(0)){
-		fg.rgb=terrain(-uvs+camera);
-	}
-
-	fg.a=1.0;
-
-	gl_FragColor = fg;
-} 
