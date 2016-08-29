@@ -108,15 +108,13 @@
             </select>
             <br/><br/>
             <br/><br/>
-            <button onclick="postMessage($('#first').find('option:selected').text()+' '+$('#second').find('option:selected').text()+' '+$('#third').find('option:selected').text()+".", $('#artifact').val());">post a message</button>
+            <button id="btn-post">post a message</button>
         </div>
     </section>
         </div>
     </section>
 
 <script>
-	file1="";
-    file2="";
 
     $(document).ready(function(){
         $.getJSON("assets/words/words.json", function(data){
@@ -126,43 +124,48 @@
                     $('#first').append($('<option>').text(val).attr('value', key));
             });
         });
-    });
 
-    $('#first').change(function() {
-        $('#second').show();
-        $('#third').hide();
+        $('#first').on("change",function() {
+            $('#second').show();
+            $('#third').hide();
 
-        $.getJSON("assets/words/words.json", function(data){
-            $('#second').empty();
-            $('#second').append($('<option>').text("---"));
-            
-            if ($('#first').val() === '0') {
-                $.each( data.second1, function( key, val ) {
+            $.getJSON("assets/words/words.json", function(data){
+                $('#second').empty();
+                $('#second').append($('<option>').text("---"));
+                
+                if ($('#first').val() === '0') {
+                    $.each( data.second1, function( key, val ) {
+                        $('#second').append($('<option>').text(val).attr('value', key));
+                    });
+                } else if ($('#first').val() === '1') {
+                    $.each( data.second2, function( key, val ) {
                     $('#second').append($('<option>').text(val).attr('value', key));
-                });
-            } else if ($('#first').val() === '1') {
-                $.each( data.second2, function( key, val ) {
-                $('#second').append($('<option>').text(val).attr('value', key));
-                });
-            } 
+                    });
+                } 
+            });
         });
-    });
 
-    $('#second').change(function() {
-        $('#third').show();
+        $('#second').on("change",function() {
+            $('#third').show();
 
-        $.getJSON("assets/words/words.json", function(data){
-            $('#third').empty();
-            $('#third').append($('<option>').text("---"));
-            if ($('#first').val() === '0') {
-                $.each( data.third1, function( key, val ) {
-                    $('#third').append($('<option>').text(val).attr('value', key));
-                });
-            } else if ($('#first').val() === '1') {
-                $.each( data.third2, function( key, val ) {
-                $('#third').append($('<option>').text(val).attr('value', key));
-                });
-            } 
+            $.getJSON("assets/words/words.json", function(data){
+                $('#third').empty();
+                $('#third').append($('<option>').text("---"));
+                if ($('#first').val() === '0') {
+                    $.each( data.third1, function( key, val ) {
+                        $('#third').append($('<option>').text(val).attr('value', key));
+                    });
+                } else if ($('#first').val() === '1') {
+                    $.each( data.third2, function( key, val ) {
+                        $('#third').append($('<option>').text(val).attr('value', key));
+                    });
+                } 
+            });
+        });
+
+
+        $("#btn-post").on("click",function(){
+            postMessage($('#first').find('option:selected').text()+' '+$('#second').find('option:selected').text()+' '+$('#third').find('option:selected').text()+".", $('#artifact').val());
         });
     });
 </script>
