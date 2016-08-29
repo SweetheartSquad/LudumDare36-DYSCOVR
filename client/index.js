@@ -1,68 +1,221 @@
-var startTime=Date.now();
-var bgm = new Howl({
-	urls:["assets/audio/BG.ogg"],
-	autoplay:true,
-	loop:true,
-	volume:0
+$(document).ready(function(){
+
+	// get wordlists
+	$.getJSON("assets/words/words.json", function(data){
+		$('#first').empty();
+		$('#first').append($('<option>').text("---"));
+		$.each( data.first, function( key, val ) {
+				$('#first').append($('<option>').text(val).attr('value', key));
+		});
+	});
+
+
+
+	// setup listeners for HTML events
+	$('#first').on("change",function() {
+		$('#second').show();
+		$('#third').hide();
+
+		$.getJSON("assets/words/words.json", function(data){
+			$('#second').empty();
+			$('#second').append($('<option>').text("---"));
+			
+			if ($('#first').val() === '0') {
+				$.each( data.second1, function( key, val ) {
+					$('#second').append($('<option>').text(val).attr('value', key));
+				});
+			} else if ($('#first').val() === '1') {
+				$.each( data.second2, function( key, val ) {
+				$('#second').append($('<option>').text(val).attr('value', key));
+				});
+			} 
+		});
+	});
+
+	$('#second').on("change",function() {
+		$('#third').show();
+
+		$.getJSON("assets/words/words.json", function(data){
+			$('#third').empty();
+			$('#third').append($('<option>').text("---"));
+			if ($('#first').val() === '0') {
+				$.each( data.third1, function( key, val ) {
+					$('#third').append($('<option>').text(val).attr('value', key));
+				});
+			} else if ($('#first').val() === '1') {
+				$.each( data.third2, function( key, val ) {
+					$('#third').append($('<option>').text(val).attr('value', key));
+				});
+			} 
+		});
+	});
+
+
+	$("#btn-post").on("click",function(){
+		client.postMessage($('#first').find('option:selected').text()+' '+$('#second').find('option:selected').text()+' '+$('#third').find('option:selected').text()+".", $('#artifact').val());
+	});
+
+	$("#btn-fullscreen").on("click",function(){
+		// fullscreen toggle from https://developer.mozilla.org/en-US/docs/Web/API/Fullscreen_API#Toggling_fullscreen_mode
+		  if (!document.fullscreenElement &&    // alternative standard method
+			  !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement ) {  // current working methods
+			if (document.body.requestFullscreen) {
+			  document.body.requestFullscreen();
+			} else if (document.body.msRequestFullscreen) {
+			  document.body.msRequestFullscreen();
+			} else if (document.body.mozRequestFullScreen) {
+			  document.body.mozRequestFullScreen();
+			} else if (document.body.webkitRequestFullscreen) {
+			  document.body.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+			}
+		  } else {
+			if (document.exitFullscreen) {
+			  document.exitFullscreen();
+			} else if (document.msExitFullscreen) {
+			  document.msExitFullscreen();
+			} else if (document.mozCancelFullScreen) {
+			  document.mozCancelFullScreen();
+			} else if (document.webkitExitFullscreen) {
+			  document.webkitExitFullscreen();
+			}
+		  }
+	});
+
+	$("#btn-help").on("click",function(){
+		displayMessage(
+			"DYSCOVR-v0.1.25b.execute('help')..."
+			+"\n"
+			+"\n*** Controls ***"
+			+"\n"
+			+"\n* rover.move = [KEYBOARD.ARROWS] / [JOYSTICK.LEFT]"
+			+"\n* rover.excavate = [KEYBOARD.SPACE] / [JOYSTICK.BTN1]"
+			+"\n"
+
+			+"\n*** About ***"
+			+"\nThis would be a good spot for some flavour text. The DYSCOVR platform was developed by the SweetHeart Squad for Ludum Dare 36 using PIXI.js.");
+	});
+
+
+
+
+	// setup game
+	startTime=Date.now();
+	var bgm = new Howl({
+		urls:["assets/audio/BG.ogg"],
+		autoplay:true,
+		loop:true,
+		volume:0
+	});
+	bgm.fadeIn(1,3000);
+
+	// create renderer
+	size = [512, 512];
+	renderer = PIXI.autoDetectRenderer(
+		size[0],size[1],
+		{antiAlias:false, transparent:false, resolution:1,
+			roundPixels:true}
+	);
+	renderer.visible=false;
+	PIXI.SCALE_MODES.DEFAULT = PIXI.SCALE_MODES.NEAREST;
+	renderer.backgroundColor = 0x375949;
+	renderer.view.style.position = "absolute";
+	renderer.view.style.display = "none";
+
+	// add the canvas to the html document
+	$("#display").prepend(renderer.view);
+
+	// create stage a container object 
+	scene = new PIXI.Container();
+
+
+	// create a new render texture..
+	brt = new PIXI.BaseRenderTexture(size[0], size[1], PIXI.SCALE_MODES.NEAREST, 1);
+	renderTexture = new PIXI.RenderTexture(brt);
+	 
+	// create a sprite that uses the new render texture...
+	// and add it to the stage
+	renderContainer = new PIXI.Container();
+	renderSprite = new PIXI.Sprite(renderTexture);
+	renderContainer.addChild(renderSprite);
+
+	
+
+	CustomFilter.prototype = Object.create(PIXI.Filter.prototype);
+	CustomFilter.prototype.constructor = CustomFilter;
+
+
+
+	PIXI.loader
+		.add("player", "assets/img/player.png")
+		.add("bg", "assets/img/bg.png")
+		.add("siteMarker", "assets/img/site marker.png")
+		.add("overlayEffects", "assets/img/overlayEffects.png")
+		.add("overlayDigital", "assets/img/overlayDigital.png")
+		.add("overlayHardware", "assets/img/overlayHardware.png")
+		.add('shader','assets/shader.frag');
+
+	PIXI.loader
+		.on("progress", loadProgressHandler)
+		.load(setup);
 });
-bgm.fadeIn(1,3000);
-
-// create renderer
-var size = [512, 512];
-var renderer = PIXI.autoDetectRenderer(
-	size[0],size[1],
-	{antiAlias:false, transparent:false, resolution:1,
-		roundPixels:true}
-);
-renderer.visible=false;
-PIXI.SCALE_MODES.DEFAULT = PIXI.SCALE_MODES.NEAREST;
-renderer.backgroundColor = 0x375949;
-renderer.view.style.position = "absolute";
-renderer.view.style.display = "none";
-
-// add the canvas to the html document
-$("#display").append(renderer.view);
-
-// create stage a container object 
-var scene = new PIXI.Container();
 
 
-// create a new render texture..
-var brt = new PIXI.BaseRenderTexture(size[0], size[1], PIXI.SCALE_MODES.NEAREST, 1);
-var renderTexture = new PIXI.RenderTexture(brt);
- 
-// create a sprite that uses the new render texture...
-// and add it to the stage
-var renderContainer = new PIXI.Container();
-var renderSprite = new PIXI.Sprite(renderTexture);
-renderContainer.addChild(renderSprite);
+function updateMessages(){
+	var s=$("#messages-backlog").html();
+	if(s.length > 0){
+		$("#messages-backlog").html(s.substr(1));
+		$("#messages-actual").append(s.substr(0,1).replace('\n','<br>'));
+	}
 
-function CustomFilter(fragmentSource){
-    PIXI.Filter.call(this,
-        // vertex shader
-        null,
-        // fragment shader
-        fragmentSource
-    );
+	$("#artifact").val(game.artifactVisible ? game.artNum : "NULL");
 }
 
-CustomFilter.prototype = Object.create(PIXI.Filter.prototype);
-CustomFilter.prototype.constructor = CustomFilter;
+function displayMessage(s){
+	$("#messages-actual").html("");
+	$("#messages-backlog").html(s);
+}
+
+
+function getMessages(id){
+	displayMessage("Excavation in progress...");
+	client.getMessages(
+		id,
+		'timestamp',
+		'ASC',
+		function(data){
+			var json = $.parseJSON(data);
+
+			if(json.rows.length > 0){
+				var s="";
+				for(var i=0;i < json.rows.length; ++i){
+					s += (json.rows[i].timestamp + ': ' + json.rows[i].text+'\n');
+				}
+				displayMessage(s);
+			}else{
+				displayMessage("no one has described this artifact");
+			}
+		}
+	);
+}
 
 
 
-PIXI.loader
-	.add("player", "assets/img/player.png")
-	.add("bg", "assets/img/bg.png")
-	.add("siteMarker", "assets/img/site marker.png")
-	.add("overlayEffects", "assets/img/overlayEffects.png")
-	.add("overlayDigital", "assets/img/overlayDigital.png")
-	.add("overlayHardware", "assets/img/overlayHardware.png")
-	.add('shader','assets/shader.frag');
 
-PIXI.loader
-	.on("progress", loadProgressHandler)
-	.load(setup);
+
+
+
+
+
+
+
+function CustomFilter(fragmentSource){
+	PIXI.Filter.call(this,
+		// vertex shader
+		null,
+		// fragment shader
+		fragmentSource
+	);
+}
 
 
 function loadProgressHandler(loader, resource){
@@ -130,16 +283,16 @@ function setup(){
 
 
 	var style = {
-	    fontFamily: 'font',
-	    fontSize:size[0]/25.0,
-	    fill : '#000000',
-	    stroke : '#FFFFFF',
-	    strokeThickness : 0,
-	    dropShadow : true,
-	    dropShadowColor : '#BBBBBB',
-	    dropShadowAngle : Math.PI / 2,
-	    dropShadowDistance : size[1]/300.0,
-	    wordWrap : false
+		fontFamily: 'font',
+		fontSize:size[0]/25.0,
+		fill : '#000000',
+		stroke : '#FFFFFF',
+		strokeThickness : 0,
+		dropShadow : true,
+		dropShadowColor : '#BBBBBB',
+		dropShadowAngle : Math.PI / 2,
+		dropShadowDistance : size[1]/300.0,
+		wordWrap : false
 	};
 	var basicText = new PIXI.Text('TextArea',style);
 	basicText.x = size[0]/15.0;
@@ -156,8 +309,8 @@ function setup(){
 
 	// shader
 	var fragmentSrc = PIXI.loader.resources.shader.data;
-    filter = new CustomFilter(fragmentSrc);
-    renderSprite.filters = [filter];
+	filter = new CustomFilter(fragmentSrc);
+	renderSprite.filters = [filter];
 
 
 
@@ -323,11 +476,11 @@ function main(){
 
 	// shader
 
-    filter.uniforms.time = (Date.now()-startTime)/1000;
-    filter.uniforms.camera = [game.x/size[0]/2.0,game.y/size[1]/2.0];
-    filter.uniforms.speed = game.player.v;
+	filter.uniforms.time = (Date.now()-startTime)/1000;
+	filter.uniforms.camera = [game.x/size[0]/2.0,game.y/size[1]/2.0];
+	filter.uniforms.speed = game.player.v;
 
-    // render
+	// render
 	renderer.render(scene,renderTexture);
 	renderer.render(renderContainer);
 	requestAnimationFrame(main);
