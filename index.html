@@ -101,6 +101,13 @@
             height:50%;
         }
 
+        #messages-actual:after{
+            content:'_';
+            
+            -webkit-animation: blink 0.5s step-end infinite;
+            animation: blink 0.5s step-end infinite;
+        }
+
         #monitor{
             box-sizing:border-box;
             color:rgb(70,240,120);
@@ -186,27 +193,30 @@
 
 
         @-webkit-keyframes flicker {
-          0% {
-            opacity: 0.9;
-          }
-          50% {
-            opacity: 1;
-          }
-        }@-moz-keyframes flicker {
-          0% {
-            opacity: 0.9;
-          }
-          50% {
-            opacity: 1;
-          }
+            0% {opacity: 0.9;}
+            50% {opacity: 1;}
+        }
+        @-moz-keyframes flicker {
+            0% {opacity: 0.9;}
+            50% {opacity: 1;}
         }
         @keyframes flicker {
-          0% {
-            opacity: 0.9;
-          }
-          50% {
-            opacity: 1;
-          }
+            0% {opacity: 0.9;}
+            50% {opacity: 1;}
+        }
+
+
+        @-webkit-keyframes blink {
+            0% {opacity: 0;}
+            50% {opacity: 1;}
+        }
+        @-moz-keyframes blink {
+            0% {opacity: 0;}
+            50% {opacity: 1;}
+        }
+        @keyframes blink {
+            0% {opacity: 0;}
+            50% {opacity: 1;}
         }
     </style>
     
@@ -228,8 +238,10 @@
 
         <div id="monitor">
             <h3>Log:</h3>
-            <div id="messages-backlog" style="display:none;">Welcome to the DYSCOVR open beta for project X654 on exo-planet 543.14.543T!</div>
-            <div id="messages"></div>
+            <div id="messages">
+                <span id="messages-backlog" style="display:none;">Welcome to the DYSCOVR open beta for project X654 on exo-planet 543.14.543T!</span>
+                <span id="messages-actual"></span>
+            </div>
             <br>
             <label>Excavation site: <input id="artifact" value="NULL" /></label>
         </div>
@@ -356,14 +368,14 @@
         var s=$("#messages-backlog").html();
         if(s.length > 0){
             $("#messages-backlog").html(s.substr(1));
-            $("#messages").append(s.substr(0,1).replace('\n','<br>'));
+            $("#messages-actual").append(s.substr(0,1).replace('\n','<br>'));
         }
 
         $("#artifact").val(game.artifactVisible ? game.artNum : "NULL");
     }
 
     function displayMessage(s){
-        $("#messages").html("");
+        $("#messages-actual").html("");
         $("#messages-backlog").html(s);
     }
 
