@@ -31,14 +31,27 @@ canvas, img {
 	-ms-interpolation-mode: nearest-neighbor;
 }
 canvas{
+	display:none;
+	position:absolute;
 	top:0;
-	left:0; /* 1-split */
+	left:0;
 	right:0;
 	bottom:0;
 	margin:auto;
-	background: #000;/*
-	width:100%!important;
-	height:100%!important;*/
+	background: #000;
+}
+
+#canvas-overlay{
+	position:absolute;
+	top:0;
+	left:0;
+	right:0;
+	bottom:0;
+	margin:auto;
+	background: transparent url("img/overlayHardware.png");
+	background-size: cover;
+
+	pointer-events:none;
 }
 
 #main{

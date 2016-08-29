@@ -129,9 +129,6 @@ $(document).ready(function(){
 	);
 	renderer.visible=false;
 	PIXI.SCALE_MODES.DEFAULT = PIXI.SCALE_MODES.NEAREST;
-	renderer.backgroundColor = 0x375949;
-	renderer.view.style.position = "absolute";
-	renderer.view.style.display = "none";
 
 	// add the canvas to the html document
 	$("#display").prepend(renderer.view);
@@ -163,7 +160,6 @@ $(document).ready(function(){
 		.add("siteMarker", "assets/img/site marker.png")
 		.add("overlayEffects", "assets/img/overlayEffects.png")
 		.add("overlayDigital", "assets/img/overlayDigital.png")
-		.add("overlayHardware", "assets/img/overlayHardware.png")
 		.add('shader','assets/shader.frag');
 
 	PIXI.loader
@@ -343,11 +339,6 @@ function setup(){
 	renderContainer.addChild(renderContainer.overlayEffects2);
 
 
-	var overlayHardware = new PIXI.Sprite(PIXI.loader.resources.overlayHardware.texture);
-	overlayHardware.width = size[0];
-	overlayHardware.height = size[1];
-	renderContainer.addChild(overlayHardware);
-
 	onResize();
 	main();
 
@@ -509,4 +500,5 @@ function onResize() {
 	var s=Math.min($("#display").innerWidth(),$("#display").innerHeight());
 	renderer.view.style.width = s + 'px';
 	renderer.view.style.height = s + 'px';
+	$("#canvas-overlay").width(s + 'px').height(s + 'px');
 }
