@@ -368,7 +368,7 @@ function main(){
 	//renderer.resize((Math.sin(Date.now()/500)+1)*32,128);
 
 	for(i in artifacts){
-		artifacts[i].rotate((Math.sin(Date.now()/500)+1)/45);
+		artifacts[i].rotate((Math.sin(Date.now()/artifacts[i].rotationTime)+1)/45);
 	}
 
 	// get inputs

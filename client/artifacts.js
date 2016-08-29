@@ -1,7 +1,10 @@
 function getPalette(rng){
+	var r=Math.floor(rng()*255);
+	var g=Math.floor(rng()*255);
+	var b=Math.floor(rng()*255);
 	return [
-		rgb(Math.floor(rng()*255),Math.floor(rng()*255),Math.floor(rng()*255)),
-		rgb(Math.floor(rng()*255),Math.floor(rng()*255),Math.floor(rng()*255))
+		rgb(r,g,b),
+		rgb(Math.floor(r+rng()*100+50)%255,Math.floor(g+rng()*100+50)%255,Math.floor(b+rng()*100+50)%255)
 	];
 }
 
@@ -157,7 +160,8 @@ function getArtifact(_seed){
 	g.pivot.y=connections[0][1];
 
 	g.rotation=rng();
-	g.rotationMult=rng();
+	g.rotationMult=rng()*2-1;
+	g.rotationTime=rng()*2000+100;
 
 	g.x=size[0]/2;
 	g.y=size[1]/2;
