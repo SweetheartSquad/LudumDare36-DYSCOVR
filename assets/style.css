@@ -22,6 +22,12 @@ button{
 	cursor:pointer;
 }
 
+h1,h2,h3,h4,h5{
+	padding:0;
+	margin:0;
+	margin-bottom: 0.3rem;
+}
+
 canvas, img {
 	image-rendering: optimizeSpeed;
 	image-rendering: -moz-crisp-edges;
@@ -72,7 +78,6 @@ canvas{
 	padding:3em;
 	display:block;
 	position:absolute;
-	background:#000;
 
 	width:56.25%; /* 1-split */
 
@@ -108,15 +113,37 @@ canvas{
 		0 0 0 #000;
 }
 
+#plaque:before {
+	content: "";
+	display: block;
+	height: 100%;
+	width: 100%;
+	top:0;
+	left:0;
+	position: absolute;
+	border-radius:0.1rem;
+
+	background-image:
+	-webkit-repeating-linear-gradient(left bottom, rgba(250,230,130,.042) 0%, transparent 20%),
+	-webkit-repeating-linear-gradient(left top, transparent 0%, rgba(250,230,130,.075) 20%),
+	-webkit-repeating-linear-gradient(left bottom, transparent 0%, rgba(250,230,130,.08) 40%);
+	background-image:
+	-moz-repeating-linear-gradient(left bottom, rgba(250,230,130,.042) 0%, transparent 20%),
+	-moz-repeating-linear-gradient(left top, transparent 0%, rgba(250,230,130,.075) 20%),
+	-moz-repeating-linear-gradient(left bottom, transparent 0%, rgba(250,230,130,.08) 40%);
+	background-image:
+	repeating-linear-gradient(left bottom, rgba(250,230,130,.042) 0%, transparent 20%),
+	repeating-linear-gradient(left top, transparent 0%, rgba(250,230,130,.075) 20%),
+	repeating-linear-gradient(to left bottom, transparent 0%, rgba(250,230,130,.08) 40%);
+
+	pointer-events:none;
+}
+
 #plaque h1{
 	font-size:3em;
-	padding:0;
-	margin:0;
 }
 #plaque h2{
 	font-size:0.75em;
-	padding:0;
-	margin:0;
 }
 #plaque h2 span{
 	display:inline-block;
@@ -188,8 +215,8 @@ canvas{
 	position:relative;
 
 	height:50%;
-	border: inset 1rem rgb(10,20,5);
-	border-radius:2rem;
+	border:inset 0.2rem #DDD;
+	border-radius:1rem;
 	padding:3rem;
 
 	overflow:hidden;
@@ -255,17 +282,27 @@ canvas{
 }
 
 #inputs{
+	text-align: center;
 	padding:0.5rem;
 	
-	border: ridge 0.3rem rgb(50,40,40);
+	border: solid 0.15rem rgb(50,40,40);
 	border-radius:1rem;
 	padding:3rem;
+
+	padding-left:0;
+	padding-right:0;
+
+	min-width: 30rem;
 	
 
 	position:relative;
 	background-image: -moz-radial-gradient(rgb(140,100,70),rgb(90,60,40));
 	background-image: -webkit-radial-gradient(rgb(140,100,70),rgb(90,60,40));
 	background-image: radial-gradient(rgb(140,100,70),rgb(90,60,40));
+}
+
+#inputs table{
+	display:inline-table;
 }
 
 #inputs:before {

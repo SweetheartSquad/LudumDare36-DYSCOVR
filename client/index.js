@@ -98,7 +98,6 @@ $(document).ready(function(){
 			"DYSCOVR-v0.1.25b.execute('help')..."
 			+"\n"
 			+"\n*** Controls ***"
-			+"\n"
 			+"\n* rover.move = [KEYBOARD.ARROWS] / [JOYSTICK.LEFT]"
 			+"\n* rover.excavate = [KEYBOARD.SPACE] / [JOYSTICK.BTN1]"
 			+"\n"
