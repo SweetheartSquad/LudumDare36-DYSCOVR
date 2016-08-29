@@ -403,7 +403,7 @@ function main(){
 		urls:["assets/audio/FoundArtifact.ogg"],
 		autoplay:false,
 		loop:false,
-		volume:0.5
+		volume:0.7
 	});
 
 	var nothingSound = new Howl({
@@ -466,7 +466,8 @@ function main(){
 	if(inputArtifact){
 		// check if an artifact should be here
 		if(game.artifactVisible){
-
+			artifactSound.play();
+			
 			// check if an artifact is already here
 			if(artifacts[game.artNum] == null){
 				// if not, make one
@@ -476,8 +477,6 @@ function main(){
 				artifact.y = game.site.y+game.site.gap/2;
 				game.addChild(artifact);
 				artifacts[game.artNum] = artifact;
-
-				artifactSound.play();
 			}
 
 			// get the messages for the artifact
