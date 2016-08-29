@@ -12,10 +12,11 @@
         html,body{
             padding:0;
             margin:0;
-            background: #375949;
+            background: transparent;
         }
         *{
             font-family:'font';
+            color:#FFF;
         }
 
         canvas, img {
@@ -32,13 +33,13 @@
             right:0;
             bottom:0;
             margin:auto;
-            background: #F0F;
+            background: #000;
         }
 
         #main{
             display:block;
             position:absolute;
-            background:#FF0;
+            background:#000;
 
             width:43.75%; /* 1-split */
 
@@ -51,7 +52,7 @@
         #display{
             display:block;
             position:absolute;
-            background:#0F0;
+            background:#000;
 
             width:56.25%; /* 1-split */
 
@@ -85,17 +86,14 @@
 
     <!-- HTML SECTION -->
     <section id="main">
-        <div>
-            welcome to DYSCOVR
-        </div>
-
-        <br/><br/>
+        <h1>DISCOVR</h1>
+        <h2>the open source platform for intergalactic archeology</h2>
 
         <label>Artifact: <input id="artifact" value=4 /></label>
 
         <h3>Messages</h3>
         <div id="messages">
-            
+            Welcome to the DYSCOVR open beta for project X654 on exo-planet 543.14.543T!
         </div>
 
         <button onclick="getMessages();">Get messages</button>
@@ -116,10 +114,7 @@
             <button id="btn-post">post a message</button>
         </div>
     </section>
-        </div>
-    </section>
-
-<script>
+    <script>
 
     $(document).ready(function(){
         $.getJSON("assets/words/words.json", function(data){
@@ -197,7 +192,7 @@
             }
         );
     }
-</script>
+    </script>
 
     <!-- CLIENT SCRIPTS -->
     <script src="client/utils.js"></script>

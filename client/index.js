@@ -54,8 +54,9 @@ CustomFilter.prototype.constructor = CustomFilter;
 PIXI.loader
 	.add("player", "assets/img/player.png")
 	.add("bg", "assets/img/bg.png")
-	.add("overlayScreen", "assets/img/overlay-screen.png")
-	.add("overlay", "assets/img/overlay.png")
+	.add("overlayEffects", "assets/img/overlayEffects.png")
+	.add("overlayDigital", "assets/img/overlayDigital.png")
+	.add("overlayHardware", "assets/img/overlayHardware.png")
 	.add('shader','assets/shader.frag');
 
 PIXI.loader
@@ -75,6 +76,7 @@ var game = new PIXI.Container();
 function setup(){
 	keys.init();
 	gamepads.init();
+	window.onresize = onResize;
 
 	// called when loader completes
 	console.log("All files loaded");
@@ -111,9 +113,9 @@ function setup(){
 
 	game.addChild(game.player);
 
-	var overlay = new PIXI.Sprite(PIXI.loader.resources.overlay.texture);
-	overlay.width = size[0];
-	overlay.height = size[1];
+	var overlayDigital = new PIXI.Sprite(PIXI.loader.resources.overlayDigital.texture);
+	overlayDigital.width = size[0];
+	overlayDigital.height = size[1];
 
 
 
@@ -135,11 +137,11 @@ function setup(){
 	basicText.y = size[1]/15.0;
 
 	game.uiText=basicText;
-	overlay.addChild(basicText);
+	overlayDigital.addChild(basicText);
 
 
 	scene.addChild(game);
-	scene.addChild(overlay);
+	scene.addChild(overlayDigital);
 
 
 
@@ -151,20 +153,26 @@ function setup(){
 
 
 
-	renderContainer.overlayScreen1 = new PIXI.Sprite(PIXI.loader.resources.overlayScreen.texture);
-	renderContainer.overlayScreen1.width = size[0];
-	renderContainer.overlayScreen1.height = size[1];
-	renderContainer.overlayScreen1.blendMode = PIXI.BLEND_MODES.MULTIPLY;
-	renderContainer.overlayScreen1.alpha=0.5;
-	renderContainer.addChild(renderContainer.overlayScreen1);
+	renderContainer.overlayEffects1 = new PIXI.Sprite(PIXI.loader.resources.overlayEffects.texture);
+	renderContainer.overlayEffects1.width = size[0];
+	renderContainer.overlayEffects1.height = size[1];
+	renderContainer.overlayEffects1.blendMode = PIXI.BLEND_MODES.MULTIPLY;
+	renderContainer.overlayEffects1.alpha=0.5;
+	renderContainer.addChild(renderContainer.overlayEffects1);
 
 
-	renderContainer.overlayScreen2 = new PIXI.Sprite(PIXI.loader.resources.overlayScreen.texture);
-	renderContainer.overlayScreen2.width = size[0];
-	renderContainer.overlayScreen2.height = size[1];
-	renderContainer.overlayScreen2.blendMode = PIXI.BLEND_MODES.SCREEN;
-	renderContainer.overlayScreen2.alpha=0.75;
-	renderContainer.addChild(renderContainer.overlayScreen2);
+	renderContainer.overlayEffects2 = new PIXI.Sprite(PIXI.loader.resources.overlayEffects.texture);
+	renderContainer.overlayEffects2.width = size[0];
+	renderContainer.overlayEffects2.height = size[1];
+	renderContainer.overlayEffects2.blendMode = PIXI.BLEND_MODES.SCREEN;
+	renderContainer.overlayEffects2.alpha=0.75;
+	renderContainer.addChild(renderContainer.overlayEffects2);
+
+
+	var overlayHardware = new PIXI.Sprite(PIXI.loader.resources.overlayHardware.texture);
+	overlayHardware.width = size[0];
+	overlayHardware.height = size[1];
+	renderContainer.addChild(overlayHardware);
 
 	onResize();
 	main();
@@ -294,8 +302,8 @@ function main(){
 	+"\ns."+Math.floor(rng()*999)+".t."+Math.floor(rng()*999)
 	+"\nd."+(Math.floor(Date.now()/1000)+1.577e+9);
 
-	renderContainer.overlayScreen1.alpha=0.6*(Math.sin(Date.now()/7657+(game.player.x)/1111.0))+0.25;
-	renderContainer.overlayScreen2.alpha=0.2*(Math.sin(Date.now()/4567+(game.y)/666.0));
+	renderContainer.overlayEffects1.alpha=0.6*(Math.sin(Date.now()/7657+(game.player.x)/1111.0))+0.25;
+	renderContainer.overlayEffects2.alpha=0.2*(Math.sin(Date.now()/4567+(game.y)/666.0));
 
 	// shader
 
