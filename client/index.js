@@ -103,7 +103,17 @@ $(document).ready(function(){
 			+"\n"
 
 			+"\n*** About ***"
-			+"\nThis would be a good spot for some flavour text. The DYSCOVR platform was developed by the SweetHeart Squad for Ludum Dare 36 using PIXI.js.");
+			+"\nArchaeology is hard. It's even harder when you can't breathe!"
+			+"\n"
+			+"\nThat's where DYSCOVR comes in. We've crowdsourced intergalactic archaeology so you don't even have to leave your couch!"
+			+"\n"
+			+"\nWe can quickly deploy hundreds of our ROVRs to any distant planet and have results within hours."
+			+"\n"
+			+"\nOur members comb the planet and use our console to classify each artifact they find."
+			+"\n"
+			+"\nWe have comprehensive pricing plans for every space exploration budget."
+			+"\n"
+			+"\nThe DYSCOVR platform was developed by the SweetHeart Squad for Ludum Dare 36 using PIXI.js.");
 	});
 
 
