@@ -96,18 +96,9 @@ void main(void)
 
 
 	vec4 fg = texture2D(uSampler, uvs);
-	if(fg.a<1.0){
-		fg.rgb=terrain(-uvs+camera);
-	}
+	fg.rgb=mix(terrain(-uvs+camera),fg.rgb,fg.a);
 	vec4 fgBlock = texture2D(uSampler, uvBlock);
-	if(fgBlock.a<1.0){
-		fgBlock.rgb=terrain(-uvBlock+camera);
-	}
-
-	//fg.r+=abs(noise((camera+uvs)*53.65)*sin((camera+uvs).x*345.)*sin((camera+uvs).y*345.635) - 0.5)/10.0;
-	//fg.g+=abs(noise((camera+uvs)*234.56)*sin((camera+uvs).x*654.6)*sin((camera+uvs).y*345.6) - 0.5)/10.0;
-	//fg.b+=abs(noise((camera+uvs)*23.45)*sin((camera+uvs).x*653.6)*sin((camera+uvs).y*6.5436) - 0.5)/10.0;
-
+	fgBlock.rgb=mix(terrain(-uvBlock+camera),fgBlock.rgb,fg.a);
 
 	uvs = vTextureCoord.xy;
 
