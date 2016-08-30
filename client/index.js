@@ -260,7 +260,7 @@ function getMessages(id){
 				}
 				displayMessage(s);
 			}else{
-				displayMessage("no one has described this artifact");
+				displayMessage("This artifact hasn't been logged before.");
 			}
 		}
 	);
