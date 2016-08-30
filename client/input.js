@@ -34,7 +34,6 @@ var keys={
 			this.down[event.keyCode]=true;
 			this.justDown[event.keyCode]=true;
 		}
-		console.log(event.keyCode, this.capture, this.capture.indexOf(event.keyCode));
 		if(this.capture.indexOf(event.keyCode) != -1){
 			event.preventDefault();
 			return false;
