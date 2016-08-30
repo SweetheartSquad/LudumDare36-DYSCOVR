@@ -159,6 +159,21 @@ $(document).ready(function(){
 	});
 	textSound.letter=100;
 
+	// sound effects
+	artifactSound = new Howl({
+		urls:["assets/audio/FoundArtifact.ogg"],
+		autoplay:false,
+		loop:false,
+		volume:0.7
+	});
+
+	nothingSound = new Howl({
+		urls:["assets/audio/FoundNothing.ogg"],
+		autoplay:false,
+		loop:false,
+		volume:0.5
+	});
+
 	// create renderer
 	size = [512, 512];
 	renderer = PIXI.autoDetectRenderer(
@@ -401,21 +416,6 @@ var artifacts=[];
 
 function main(){
 	//renderer.resize((Math.sin(Date.now()/500)+1)*32,128);
-
-	// sound effects
-	var artifactSound = new Howl({
-		urls:["assets/audio/FoundArtifact.ogg"],
-		autoplay:false,
-		loop:false,
-		volume:0.7
-	});
-
-	var nothingSound = new Howl({
-		urls:["assets/audio/FoundNothing.ogg"],
-		autoplay:false,
-		loop:false,
-		volume:0.5
-	});
 
 	for(i in artifacts){
 		artifacts[i].rotate((Math.sin(Date.now()/artifacts[i].rotationTime)+1)/45);
