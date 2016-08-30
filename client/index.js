@@ -452,20 +452,18 @@ function main(){
 		inputArtifact=true;
 	}
 
-	if(gamepads.connected){
-		var stick = gamepads.getStick();
-		inputMove[0]+=stick[0];
-		inputMove[1]+=stick[1];
-		inputCam[0]+=stick[2];
-		inputCam[1]+=stick[3];
+	var axes = gamepads.getAxes(0,4);
+	inputMove[0]+=axes[0];
+	inputMove[1]+=axes[1];
+	inputCam[0]+=axes[2];
+	inputCam[1]+=axes[3];
 
-		var dpad = gamepads.getDpad();
-		inputMove[0]+=dpad[0];
-		inputMove[1]+=dpad[1];
+	var dpad = gamepads.getDpad();
+	inputMove[0]+=dpad[0];
+	inputMove[1]+=dpad[1];
 
-		if(gamepads.isJustDown(0)){
-			inputArtifact=true;
-		}
+	if(gamepads.isJustDown(0)){
+		inputArtifact=true;
 	}
 
 	// update excavation site
