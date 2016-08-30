@@ -12,6 +12,13 @@ $(document).ready(function(){
 		phrase.words = data;
 	});
 
+
+	// try to auto-focus and make sure the game can be focused with a click if run from an iframe
+	window.focus();
+	$(document).on("mousedown",function(event){
+		window.focus();
+	});
+
 	// setup listeners for HTML events
 	
 	$(".btn-up").eq(0).on("click",function(){
