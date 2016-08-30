@@ -18,8 +18,7 @@ postMessage:function(msg,artifact){
 			artifact:artifact
 		}
 	}).done(function(data,status,xhr){
-		console.log(xhr.responseText);
-		console.log(data);
+
 	}).fail(function(xhr,status,error){
 		console.error(error);
 	});
@@ -49,8 +48,7 @@ getMessages:function(artifact,sort_column,sort_order,f){
 			sort_order:sort_order
 		}
 	}).done(function(data,status,xhr){
-		console.log(xhr.responseText);
-		console.log(data);
+		
 		f(data);
 	}).fail(function(xhr,status,error){
 		console.error(error);
