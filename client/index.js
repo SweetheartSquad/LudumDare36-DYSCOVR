@@ -232,7 +232,7 @@ function updateMessages(){
 			textSound.play();
 			textSound.letter=0;
 		}
-		$("#messages-actual").scrollTop($("#messages-actual")[0].scrollHeight);
+		$("#messages").scrollTop($("#messages").prop("scrollHeight"));
 	}
 
 	$("#artifact").val(game.artifactVisible ? game.artNum : "NULL");
