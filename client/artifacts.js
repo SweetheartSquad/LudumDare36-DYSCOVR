@@ -10,7 +10,6 @@ function getPalette(rng){
 
 function getArtifact(_seed){
 	var rng=seed(_seed);
-
 	if(getArtifact.recursion == 0){
 		getArtifact.palette=getPalette(rng);
 	}
@@ -20,9 +19,14 @@ function getArtifact(_seed){
 	var g = new PIXI.Graphics();
 
 
+	var path=[0,0,rng()*16-rng()*16,rng()*16-rng()*16];
+	while(Math.abs(path[2])+Math.abs(path[3]) < 1 ){
+		path[2]=rng()*16-rng()*16;
+		path[3]=rng()*16-rng()*16;
+	}
 
 	var p=fractalCurve({
-		start_path:[0,0,rng()*16-rng()*16,rng()*16-rng()*16],
+		start_path:path,
 		iterations:3+rng()*4,
 		degradation:rng()*1,
 		angle:90+10*rng()
@@ -69,6 +73,10 @@ function getArtifact(_seed){
 		bounds[2]=Math.max(bounds[2],p[i]);
 		bounds[1]=Math.min(bounds[1],p[i+1]);
 		bounds[3]=Math.max(bounds[3],p[i+1]);
+	}
+
+	if(bounds[0]==bounds[2] || bounds[1]==bounds[3]){
+		console.error("artifact has no area");
 	}
 
 	bounds.max=Math.max(bounds[2]-bounds[0],bounds[3]-bounds[1]);

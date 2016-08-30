@@ -5,10 +5,16 @@ function rgb(r,g,b){
 
 // "random" number generator (replace this later with a proper RNG)
 function seed(s) {
-    return function() {
+	var res=function() {
+        ++this.c;
         s = Math.sin(s) * 10000;
+        if(s==0){
+        	s=this.c/1000.0;
+        }
         return Math.abs(s)%1;
     };
+    res.c=0;
+    return res;
 };
 
 
