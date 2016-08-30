@@ -8,11 +8,19 @@ var keys={
 	UP: 38,
 	RIGHT: 39,
 	DOWN: 40,
+
+	W: 87,
+	A: 65,
+	S: 83,
+	D: 68,
+
 	SPACE: 32,
 
+	capture:[],
+
 	init:function(){
-		$(window).on("keyup",keys.on_up.bind(keys));
-		$(window).on("keydown",keys.on_down.bind(keys));
+		$(document).on("keyup",keys.on_up.bind(keys));
+		$(document).on("keydown",keys.on_down.bind(keys));
 	},
 
 	clear:function(){
@@ -26,11 +34,20 @@ var keys={
 			this.down[event.keyCode]=true;
 			this.justDown[event.keyCode]=true;
 		}
+		console.log(event.keyCode, this.capture, this.capture.indexOf(event.keyCode));
+		if(this.capture.indexOf(event.keyCode) != -1){
+			event.preventDefault();
+			return false;
+		}
 	},
 	on_up:function(event){
 		this.down[event.keyCode]=false;
 		this.justDown[event.keyCode]=false;
 		this.justUp[event.keyCode]=true;
+		if(this.capture.indexOf(event.keyCode) != -1){
+			event.preventDefault();
+			return false;
+		}
 	},
 
 	isDown:function(_key){

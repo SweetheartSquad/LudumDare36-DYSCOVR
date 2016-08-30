@@ -300,12 +300,14 @@ function loadProgressHandler(loader, resource){
 var game = new PIXI.Container();
 
 function setup(){
-	keys.init();
-	gamepads.init();
-	window.onresize = onResize;
-
 	// called when loader completes
 	console.log("All files loaded");
+
+
+	// setup inputs
+	keys.init();
+	gamepads.init();
+	keys.capture=[keys.LEFT,keys.RIGHT,keys.UP,keys.DOWN,keys.SPACE,keys.W,keys.A,keys.S,keys.D];
 
 	//game
 	var landingSite = new PIXI.Sprite(PIXI.loader.resources.landingSite.texture);
@@ -401,6 +403,9 @@ function setup(){
 	renderContainer.addChild(renderContainer.overlayEffects2);
 
 
+
+	// start the main loop
+	window.onresize = onResize;
 	onResize();
 	main();
 
@@ -427,13 +432,13 @@ function main(){
 	var inputCam=[0,0];
 	var inputArtifact=false;
 
-	if(keys.isDown(keys.LEFT)){
+	if(keys.isDown(keys.LEFT) || keys.isDown(keys.A)){
 		inputMove[0]=-1;
-	}if(keys.isDown(keys.RIGHT)){
+	}if(keys.isDown(keys.RIGHT) || keys.isDown(keys.D)){
 		inputMove[0]=1;
-	}if(keys.isDown(keys.UP)){
+	}if(keys.isDown(keys.UP) || keys.isDown(keys.W)){
 		inputMove[1]=-1;
-	}if(keys.isDown(keys.DOWN)){
+	}if(keys.isDown(keys.DOWN) || keys.isDown(keys.S)){
 		inputMove[1]=1;
 	}if(keys.isJustDown(keys.SPACE)){
 		inputArtifact=true;
