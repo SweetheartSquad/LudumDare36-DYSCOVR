@@ -63,9 +63,13 @@ $(document).ready(function(){
 		var p1=$('#phrase-1').html();
 		var p2=$('#phrase-2').html();
 		var p3=$('#phrase-3').html();
+		var currArt=$('#artifact').val()
 
-		if(p3!="---" && p2!="---" && p1!="---"){
-			client.postMessage(p1+' '+p2+' '+p3+".", $('#artifact').val());
+		if(p3!="---" && p2!="---" && p1!="---" && artifacts[currArt].done == false){
+			client.postMessage(p1+' '+p2+' '+p3+".", currArt);
+			artifacts[currArt].done = true;
+		}else if(artifacts[currArt].done == true){
+			displayMessage("ERROR: You've already sent a message about this artifact. Please classify other artifacts.");
 		}else{
 			displayMessage("ERROR: Description incomplete; please fill out all fields.");
 		}
@@ -475,6 +479,7 @@ function main(){
 				artifact = getArtifact(game.artNum);
 				artifact.x = game.site.x+game.site.gap/2;
 				artifact.y = game.site.y+game.site.gap/2;
+				artifact.done = false;
 				game.addChild(artifact);
 				artifacts[game.artNum] = artifact;
 			}
