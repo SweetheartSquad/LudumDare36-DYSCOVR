@@ -211,7 +211,6 @@ $(document).ready(function(){
 
 
 	PIXI.loader
-		.add("player", "assets/img/player.png")
 		.add("landingSite", "assets/img/landingSite.png")
 		.add("siteMarker", "assets/img/site marker.png")
 		.add("overlayEffects", "assets/img/overlayEffects.png")
