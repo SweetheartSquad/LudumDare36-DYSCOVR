@@ -68,10 +68,11 @@ $(document).ready(function(){
 		if(p3!="---" && p2!="---" && p1!="---" && artifacts[currArt].done == false){
 			client.postMessage(p1+' '+p2+' '+p3+".", currArt);
 			artifacts[currArt].done = true;
+			displayMessage("Message sent. Thank you for classifying this artifact!");
 		}else if(artifacts[currArt].done == true){
-			displayMessage("ERROR: You've already sent a message about this artifact. Please classify other artifacts.");
+			displayMessage("ERROR: You've already sent a message about this artifact. Please find new artifacts to classify.");
 		}else{
-			displayMessage("ERROR: Description incomplete; please fill out all fields.");
+			displayMessage("ERROR: Description incomplete. Please fill out all fields.");
 		}
 
 		btnSound.play();
