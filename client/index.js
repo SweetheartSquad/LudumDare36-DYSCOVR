@@ -72,7 +72,9 @@ $(document).ready(function(){
 		var p3=$('#phrase-3').html();
 		var currArt=$('#artifact').val()
 
-		if(p3!="---" && p2!="---" && p1!="---" && artifacts[currArt].done == false){
+		if(!artifacts[currArt]){
+			displayMessage("ERROR: You must have an artifact selected to log.")
+		}else if(p3!="---" && p2!="---" && p1!="---" && artifacts[currArt].done == false){
 			client.postMessage(p1+' '+p2+' '+p3+".", currArt);
 			artifacts[currArt].done = true;
 			displayMessage("Message sent. Thank you for classifying this artifact!");
