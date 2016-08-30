@@ -294,7 +294,7 @@ function loadProgressHandler(loader, resource){
 	console.log("progress: " + loader.progress+"%");
 
 
-	$("#canvas-overlay pre").append("\n\t\t\t"+Math.round(loader.progress)+"%...");
+	$("#canvas-overlay pre").append("\n"+Math.round(loader.progress)+"%...");
 }
 
 var game = new PIXI.Container();

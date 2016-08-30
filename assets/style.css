@@ -65,6 +65,12 @@ canvas{
 	background-size: cover;
 
 	pointer-events:none;
+
+	overflow:hidden;
+}
+
+#canvas-overlay pre{
+	padding-left:10%;
 }
 
 #main{
