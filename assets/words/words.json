@@ -30,7 +30,6 @@
 		"industrial",
 		"miniature"
 	],[
-		"kill",
 		"dig",
 		"drill",
 		"refine",
@@ -40,6 +39,7 @@
 		"synthesize",
 		"break apart",
 		"dissect",
+		"destroy",
 		"clean",
 		"weld",
 		"shape",
