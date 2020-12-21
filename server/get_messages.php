@@ -45,9 +45,9 @@ FROM (
 INNER JOIN messages ON a.messages_id = messages.messages_id
 ORDER BY messages.".$sort_column." ".$sort_order;
 
-$res = mysql_query($query);
+$res = mysqli_query($connection, $query);
 if(!$res){
-	datalog("Could not get messages from database: ".mysql_error());
+	datalog("Could not get messages from database: ".mysqli_error($connection));
 	datalog("Query: ".$query);
 	fail();
 }
@@ -55,7 +55,7 @@ if(!$res){
 datalog("Retrieved messages from database.");
 
 $data["rows"] = array();
-while($r = mysql_fetch_assoc($res)) {
+while($r = mysqli_fetch_assoc($res)) {
     $data["rows"][] = $r;
 }
 

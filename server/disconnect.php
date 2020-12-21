@@ -1,5 +1,5 @@
 <?php
-mysql_close($connection);
+mysqli_close($connection);
 datalog("Disconnected from database.");
 done();
 ?>

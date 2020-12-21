@@ -20,17 +20,17 @@ if($artifact < 0){
 
 $query="INSERT INTO messages (text) VALUES('".$msg."')";
 
-$res = mysql_query($query);
+$res = mysqli_query($connection, $query);
 if(!$res){
-	datalog("Could not post message ('".$msg."') to database: ".mysql_error());
+	datalog("Could not post message ('".$msg."') to database: ".mysqli_error($connection));
 	datalog("Query: ".$query);
 }
 
-$msg_id = mysql_insert_id();
+$msg_id = mysqli_insert_id($connection);
 $query = "INSERT INTO artifact_messages (artifact_id,messages_id) VALUES(".$artifact.",".$msg_id.")";
-$res = mysql_query($query);
+$res = mysqli_query($connection, $query);
 if(!$res){
-	datalog("Posted message ('".$msg."') to database, but could not post artifact_messages entry: ".mysql_error());
+	datalog("Posted message ('".$msg."') to database, but could not post artifact_messages entry: ".mysqli_error($connection));
 	datalog("Query: ".$query);
 }
 

@@ -24,12 +24,11 @@ $data=array(
 
 
 
-$connection = mysql_connect("localhost",$username,$password);
+$connection = mysqli_connect("localhost",$username,$password,$database);
 if(!$connection){
-	datalog("Could not connect to database: ".mysql_error());
+	datalog("Could not connect to database: ".mysqli_error($connection));
 	fail();
 }
 datalog("Connected to database.");
-mysql_select_db($database);
 
 ?>
