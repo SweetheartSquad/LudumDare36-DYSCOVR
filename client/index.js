@@ -75,9 +75,14 @@ $(document).ready(function(){
 		if(!artifacts[currArt]){
 			displayMessage("ERROR: You must have an artifact selected to log.")
 		}else if(p3!="---" && p2!="---" && p1!="---" && artifacts[currArt].done == false){
-			client.postMessage(p1+' '+p2+' '+p3+".", currArt);
-			artifacts[currArt].done = true;
-			displayMessage("Message sent. Thank you for classifying this artifact!");
+			displayMessage("Sending...");
+			client.postMessage(p1+' '+p2+' '+p3+".", currArt).done(function(data,status,xhr){
+				artifacts[currArt].done = true;
+				displayMessage("Message sent. Thank you for classifying this artifact!");
+			}).fail(function(xhr,status,error){
+				displayMessage("ERROR: Message aborted due to server error. Please contact your administrator for more information.");
+				console.error(error);
+			});
 		}else if(artifacts[currArt].done == true){
 			displayMessage("ERROR: You've already sent a message about this artifact. Please find new artifacts to classify.");
 		}else{
@@ -259,20 +264,22 @@ function getMessages(id){
 		id,
 		'timestamp',
 		'ASC',
-		function(data){
-			var json = $.parseJSON(data);
+	).done(function(data,status,xhr){
+		var json = $.parseJSON(data);
 
-			if(json.rows.length > 0){
-				var s="";
-				for(var i=0;i < json.rows.length; ++i){
-					s += (json.rows[i].timestamp + ': ' + json.rows[i].text+'\n');
-				}
-				displayMessage(s);
-			}else{
-				displayMessage("This artifact hasn't been logged before.");
+		if(json.rows.length > 0){
+			var s="";
+			for(var i=0;i < json.rows.length; ++i){
+				s += (json.rows[i].timestamp + ': ' + json.rows[i].text+'\n');
 			}
+			displayMessage(s);
+		}else{
+			displayMessage("This artifact hasn't been logged before.");
 		}
-	);
+	}).fail(function(xhr,status,error){
+		displayMessage("ERROR: Message aborted due to server error. Please contact your administrator for more information.");
+		console.error(error);
+	});
 }
 
 

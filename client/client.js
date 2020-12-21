@@ -1,3 +1,4 @@
+var base = "https://seans.site/stuff/DYSCOVR";
 var client={
 // msg: message text
 // artiface: ID of artifact to send message for
@@ -8,8 +9,8 @@ var client={
 // 	datalog:["text","with log","messages"]
 // }
 postMessage:function(msg,artifact){
-	$.ajax({
-		url:"https://seans.site/stuff/DYSCOVR/post_message.php",
+	return $.ajax({
+		url: base + "/post_message.php",
 		async:true,
 		method:"POST",
 
@@ -17,11 +18,7 @@ postMessage:function(msg,artifact){
 			msg:msg,
 			artifact:artifact
 		}
-	}).done(function(data,status,xhr){
-
-	}).fail(function(xhr,status,error){
-		console.error(error);
-	});
+	})
 },
 
 // artifact: ID of artifact to get messages for
@@ -35,10 +32,10 @@ postMessage:function(msg,artifact){
 // 	datalog:["text","with log","messages"],
 // 	rows:[{text,rating,timestamp},{text,rating,timestamp},...]
 // }
-getMessages:function(artifact,sort_column,sort_order,f){
+getMessages:function(artifact,sort_column,sort_order){
 	var artifact=$("input").val();
-	$.ajax({
-		url:"https://seans.site/stuff/DYSCOVR/get_messages.php",
+	return $.ajax({
+		url: base + "/get_messages.php",
 		async:true,
 		method:"POST",
 
@@ -47,11 +44,6 @@ getMessages:function(artifact,sort_column,sort_order,f){
 			sort_column:sort_column,
 			sort_order:sort_order
 		}
-	}).done(function(data,status,xhr){
-		
-		f(data);
-	}).fail(function(xhr,status,error){
-		console.error(error);
 	});
 }
 };
